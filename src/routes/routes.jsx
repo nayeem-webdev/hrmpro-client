@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import ErrorPage from "../pages/other_pages/ErrorPage";
-import Home from "../pages/other_pages/Home";
-import SignUpPage from "../pages/other_pages/SignUpPage";
-import ContactUs from "../pages/other_pages/ContactUs";
-import AboutPage from "../pages/other_pages/AboutPage";
-import LoginPage from "../pages/other_pages/LoginPage";
+import ErrorPage from "../pages/public_pages/ErrorPage";
+import Home from "../pages/public_pages/Home";
+import SignUpPage from "../pages/public_pages/SignUpPage";
+import ContactUs from "../pages/public_pages/ContactUs";
+import AboutPage from "../pages/public_pages/AboutPage";
+import LoginPage from "../pages/public_pages/LoginPage";
 
 const routes = createBrowserRouter([
   {
