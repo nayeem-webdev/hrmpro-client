@@ -7,6 +7,7 @@ import ContactUs from "../pages/public_pages/ContactUs";
 import AboutPage from "../pages/public_pages/AboutPage";
 import LoginPage from "../pages/public_pages/LoginPage";
 import DashboardLayout from "../layouts/DashboardLayout";
+import UserProfile from "../pages/shared_pages/UserProfile";
 
 const routes = createBrowserRouter([
   {
@@ -39,6 +40,13 @@ const routes = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashboardLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "user-profile",
+        element: <UserProfile />,
+      },
+    ],
   },
 ]);
 

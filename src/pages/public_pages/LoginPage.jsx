@@ -53,14 +53,14 @@ const LoginPage = () => {
         };
         API.post("/user", newUser)
           .then((res) => {
-            console.log(res);
-            if (res.data.insertedIs) {
+            if (res.data.insertedId) {
               navigate("/dashboard/user-profile");
               toast.success("Welcome Please Update Your Profile");
             } else {
               navigate("/dashboard");
-
               toast.success("You are Logged in!");
+              console.log(res.data?.insertedId);
+              console.log(res.data);
             }
           })
           .catch((err) => {

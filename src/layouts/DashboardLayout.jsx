@@ -17,7 +17,7 @@ const DashboardLayout = () => {
         <DashboardSideNav toggleSidebar={toggleSidebar} isOpen={isOpen} />
 
         {/* Outlet */}
-        <div className="h-[calc(100vh-64px)] overflow-auto p-4 w-full">
+        <div className="h-[calc(100vh-64px)] overflow-auto p-4 w-full ">
           <div className="">
             <Outlet />
           </div>
