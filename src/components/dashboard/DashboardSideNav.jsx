@@ -1,95 +1,116 @@
 import { NavLink } from "react-router-dom";
+import { IoCashOutline } from "react-icons/io5";
+
 import {
   AiFillDashboard,
-  AiOutlineAppstore,
-  AiOutlineComment,
   AiOutlineBarChart,
-  AiOutlineShoppingCart,
+  AiOutlineUnorderedList,
   AiOutlineUser,
 } from "react-icons/ai";
 import { FaHome } from "react-icons/fa";
 import PropTypes from "prop-types";
 
 const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
+  const employee = true;
+  const HRExecutive = true;
+  const admin = true;
   return (
     <>
       <nav
-        className={`fixed z-50 lg:bg-black/5 lg:dark:text-white lg:text-black bg-black/90 dark:bg-white/20 text-white dark:bg-white  h-[calc(100vh-64px)] flex-shrink-0 transform transition-transform duration-500 ${
+        className={`fixed z-50 bg-black/5 text-black  h-[calc(100vh-64px)] flex-shrink-0 transform transition-transform duration-500 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 lg:relative lg:flex`}
       >
         <div className="flex flex-col">
-          <div className="mt-4">
+          <div>
             <NavLink
-              to="/admin/dashboard"
+              to="/dashboard"
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 dark:hover:bg-primary/50 ${
+                `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
                   isActive ? "bg-primary text-white" : ""
                 }`
               }
             >
               <AiFillDashboard /> Dashboard
             </NavLink>
-            <NavLink
-              to="/admin/users"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 dark:hover:bg-primary/50 ${
-                  isActive ? "bg-primary text-white" : ""
-                }`
-              }
-            >
-              <AiOutlineUser /> Users
-            </NavLink>
-
-            <NavLink
-              to="/admin/products"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 dark:hover:bg-primary/50 ${
-                  isActive ? "bg-primary text-white" : ""
-                }`
-              }
-            >
-              <AiOutlineAppstore /> All Products
-            </NavLink>
-
-            <NavLink
-              to="/admin/sales"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 dark:hover:bg-primary/50 ${
-                  isActive ? "bg-primary text-white" : ""
-                }`
-              }
-            >
-              <AiOutlineShoppingCart /> Sales
-            </NavLink>
-
-            <NavLink
-              to="/admin/reports"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 dark:hover:bg-primary/50 ${
-                  isActive ? "bg-primary text-white" : ""
-                }`
-              }
-            >
-              <AiOutlineBarChart /> Reports
-            </NavLink>
-
-            <NavLink
-              to="/admin/reviews"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 dark:hover:bg-primary/50 ${
-                  isActive ? "bg-primary text-white" : ""
-                }`
-              }
-            >
-              <AiOutlineComment /> All Reviews
-            </NavLink>
+            {employee && (
+              <>
+                <NavLink
+                  to="/dashboard/work-sheet"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                      isActive ? "bg-primary text-white" : ""
+                    }`
+                  }
+                >
+                  <AiOutlineUnorderedList /> Work Sheet
+                </NavLink>
+                <NavLink
+                  to="/dashboard/payment-history"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                      isActive ? "bg-primary text-white" : ""
+                    }`
+                  }
+                >
+                  <IoCashOutline /> Payment History
+                </NavLink>
+              </>
+            )}
+            {HRExecutive && (
+              <>
+                <NavLink
+                  to="/dashboard/employee-list"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                      isActive ? "bg-primary text-white" : ""
+                    }`
+                  }
+                >
+                  <AiOutlineUser /> Employee List
+                </NavLink>
+                <NavLink
+                  to="/dashboard/progress"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                      isActive ? "bg-primary text-white" : ""
+                    }`
+                  }
+                >
+                  <AiOutlineBarChart /> Progress
+                </NavLink>
+              </>
+            )}
+            {admin && (
+              <>
+                <NavLink
+                  to="/dashboard/all-employee-list"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                      isActive ? "bg-primary text-white" : ""
+                    }`
+                  }
+                >
+                  <AiOutlineUser /> Employee List
+                </NavLink>
+                <NavLink
+                  to="/dashboard/payroll"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                      isActive ? "bg-primary text-white" : ""
+                    }`
+                  }
+                >
+                  <IoCashOutline /> Payroll
+                </NavLink>
+              </>
+            )}
           </div>
 
           {/* Home Button */}
           <NavLink
             to="/"
-            className=" mt-8 flex items-center gap-2 px-4 py-2 bg-white lg:bg-black text-black lg:text-white hover:bg-black/80 dark:bg-white dark:text-black hover:dark:bg-white/90 w-full justify-center"
+            className=" mt-8 flex items-center gap-2 px-4 py-2 bg-white lg:bg-black text-black lg:text-white hover:bg-black/80 hover/90 w-full justify-center"
           >
             <FaHome /> Back to Home Page
           </NavLink>

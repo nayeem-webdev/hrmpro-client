@@ -6,7 +6,7 @@ import SignUpPage from "../pages/public_pages/SignUpPage";
 import ContactUs from "../pages/public_pages/ContactUs";
 import AboutPage from "../pages/public_pages/AboutPage";
 import LoginPage from "../pages/public_pages/LoginPage";
-import Dashboard from "../pages/shared_pages/Dashboard";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 const routes = createBrowserRouter([
   {
@@ -34,11 +34,11 @@ const routes = createBrowserRouter([
         path: "/about",
         element: <AboutPage />,
       },
-      {
-        path: "/dashboard",
-        element: <Dashboard />,
-      },
     ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
   },
 ]);
 
