@@ -42,7 +42,7 @@ const SignUpPage = () => {
         .then(() => {
           updateUser(fullName, photoUrl).then(() => {
             toast.success("User Register Successful!");
-            navigate("/account");
+            navigate("/dashboard");
           });
         })
         .catch((err) => {

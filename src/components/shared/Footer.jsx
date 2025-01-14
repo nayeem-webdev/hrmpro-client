@@ -1,7 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
+  const navLinks = [
+    {
+      path: "/",
+      name: "Home",
+      id: 1,
+    },
+    {
+      path: "/contact",
+      name: "Contact Us",
+      id: 2,
+    },
+    {
+      path: "/about",
+      name: "About",
+      id: 3,
+    },
+  ];
   return (
     <footer className="bg-gray-800 text-white">
       <div className="container mx-auto px-4 py-8 md:py-12">
@@ -10,28 +27,26 @@ const Footer = () => {
           {/* Logo */}
           <div className="text-xl flex justify-center md:justify-start font-bold mb-4 md:mb-0 w-full md:w-1/3">
             <Link to="/" className="text-primary">
-              Dine
+              HRM
             </Link>
-            Flow
+            pro
           </div>
 
           {/* Navigation Links */}
           <div className="flex justify-center space-x-6 text-sm md:text-base w-full md:w-1/3">
-            <Link to="/" className="hover:text-primary transition-colors">
-              Home
-            </Link>
-            <Link
-              to="/all-foods"
-              className="hover:text-primary transition-colors"
-            >
-              All Foods
-            </Link>
-            <Link
-              to="/gallery"
-              className="hover:text-primary transition-colors"
-            >
-              Gallery
-            </Link>
+            {navLinks.map((navItem) => (
+              <NavLink
+                key={navItem.id}
+                to={navItem.path}
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-primary"
+                    : " hover:text-primary transition-colors"
+                }
+              >
+                {navItem.name}
+              </NavLink>
+            ))}
           </div>
 
           {/* Social Icons */}
@@ -67,9 +82,7 @@ const Footer = () => {
 
         {/* Bottom Section */}
         <div className="text-center text-sm text-gray-500">
-          <p>
-            &copy; {new Date().getFullYear()} DineFlow. All rights reserved.
-          </p>
+          <p>&copy; {new Date().getFullYear()} HRMpro. All rights reserved.</p>
         </div>
       </div>
     </footer>

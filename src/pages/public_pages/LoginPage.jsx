@@ -3,7 +3,7 @@ import AuthContext from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GoogleAuthProvider } from "firebase/auth";
-import Google from "../../assets/google";
+import Google from "../../assets/Google";
 
 const LoginPage = () => {
   const { loginWithPopUp, loginWithPassword, setUser, loading } =
@@ -21,7 +21,7 @@ const LoginPage = () => {
         const usr = res.user;
         setUser(usr);
         toast.success("You are Logged in!");
-        navigate("/account");
+        navigate("/dashboard");
       })
       .catch((err) => {
         console.log(err.message);
@@ -37,7 +37,7 @@ const LoginPage = () => {
         const usr = res.user;
         setUser(usr);
         toast.success("You are Logged in!");
-        navigate("/account");
+        navigate("/dashboard");
       })
       .catch((err) => {
         console.log(err.message);

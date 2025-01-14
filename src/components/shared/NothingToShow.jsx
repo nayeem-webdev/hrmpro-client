@@ -3,7 +3,7 @@ import { FaFrownOpen } from "react-icons/fa";
 const NothingToShow = () => {
   return (
     <div className="flex flex-col items-center justify-center space-y-4 h-full py-16 px-6 ">
-      <FaFrownOpen className="text-6xl text-primary" />{" "}
+      <FaFrownOpen className="text-6xl text-primary" />
       <h2 className="text-2xl font-semibold text-accent">
         Oops! Nothing to Show
       </h2>

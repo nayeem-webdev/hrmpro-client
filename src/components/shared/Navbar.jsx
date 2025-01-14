@@ -37,6 +37,7 @@ const Navbar = () => {
       .catch((err) => console.log(err.message));
   };
 
+  const employee = true;
   return (
     <nav className="shadow-md fixed z-50 bg-white w-full">
       <Tooltip
@@ -47,7 +48,7 @@ const Navbar = () => {
         <div className="flex flex-col bg-black text-white rounded-md p-4 ">
           {user && (
             <>
-              <Link to={"/account"} className="flex items-center gap-3 mb-4">
+              <Link to={"/dashboard"} className="flex items-center gap-3 mb-4">
                 <img
                   src={
                     user?.photoURL ||
@@ -62,24 +63,22 @@ const Navbar = () => {
                   </h4>
                 </div>
               </Link>
-              <Link
-                to={"/account/my-orders"}
-                className="mt-2 px-4 py-2 w-full text-sm font-medium text-center rounded-md bg-primary text-white hover:bg-accent transition"
-              >
-                My Orders
-              </Link>
-              <Link
-                to={"/account/my-foods"}
-                className="mt-2 px-4 py-2 w-full text-sm font-medium text-center rounded-md bg-primary text-white hover:bg-accent transition"
-              >
-                My Foods
-              </Link>
-              <Link
-                to={"/add-food"}
-                className="mt-2 px-4 py-2 w-full text-sm font-medium text-center rounded-md bg-primary text-white hover:bg-accent transition"
-              >
-                Add Food
-              </Link>
+              {employee && (
+                <>
+                  <Link
+                    to={"/dashboard/work-sheet"}
+                    className="mt-2 px-4 py-2 w-full text-sm font-medium text-center rounded-md bg-primary text-white hover:bg-accent transition"
+                  >
+                    Work Sheet
+                  </Link>
+                  <Link
+                    to={"/dashboard/payment-history"}
+                    className="mt-2 px-4 py-2 w-full text-sm font-medium text-center rounded-md bg-primary text-white hover:bg-accent transition"
+                  >
+                    Payment History
+                  </Link>
+                </>
+              )}
             </>
           )}
         </div>
