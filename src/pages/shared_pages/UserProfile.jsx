@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   FaCamera,
   FaCoins,
   FaDollarSign,
-  FaPen,
   FaRegEdit,
   FaUserAlt,
   FaUserTie,
@@ -13,38 +12,66 @@ import { GrDocumentUpdate } from "react-icons/gr";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AuthContext from "../../context/AuthContext";
+import { API } from "../../api/API";
+import { useQuery } from "@tanstack/react-query";
+import NothingToShow from "../../components/shared/NothingToShow";
+import Loading from "../../components/shared/Loading";
 
 const UserProfile = () => {
-  const userData = {
-    _id: "6785eeea4c0a48d11550f92d",
-    email: "nayeem.cubicedu@gmail.com",
-    displayName: "Nayeem Uddin",
-    photoURL: "https://i.ibb.co/nRm6fz9/Png-Item-5067022.png",
-    uid: "rWWZylneJ1hn4B1iYClGOM3U2t82",
-    userRole: "",
-    isVerified: true,
-    Details: {
-      BankAccount: "",
-      Salary: 0,
-      designation: "",
+  const { user } = useContext(AuthContext);
+
+  const {
+    data: userData,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["userData", user?.uid],
+    queryFn: async () => {
+      const res = await API.get(`/user/${user?.uid}`);
+      console.log(res);
+      if (res.data) {
+        return res.data;
+      }
+      throw new Error("Failed to fetch user data");
     },
-  };
+  });
+  console.log(userData);
+  console.log(userData);
+
+  //   Open Close Update Form
   const [designationUpdate, setDesignationUpdate] = useState(false);
   const [roleUpdate, setRoleUpdate] = useState(false);
   const [salaryUpdate, setSalaryUpdate] = useState(false);
   const [accountUpdate, setAccountUpdate] = useState(false);
-  const [photoURL, setPhotoURL] = useState(userData.photoURL || "");
-  const [salary, setSalary] = useState(userData.Details.Salary);
-  const [designation, setDesignation] = useState(userData.Details.designation);
-  const [role, setRole] = useState(userData.userRole);
-  const [bankAccount, setBankAccount] = useState(userData.Details.BankAccount);
 
-  const handleUpdate = (field, value) => {
+  const [photoURL, setPhotoURL] = useState("https://via.placeholder.com/150");
+  const [salary, setSalary] = useState("");
+  const [designation, setDesignation] = useState("");
+  const [role, setRole] = useState("");
+  const [bankAccount, setBankAccount] = useState("");
+
+  useEffect(() => {
+    if (userData) {
+      setPhotoURL(userData?.photoURL);
+      setSalary(userData?.Details?.Salary || "");
+      setDesignation(userData?.Details?.designation || "");
+      setRole(userData?.userRole || "");
+      setBankAccount(userData?.details?.BankAccount || "");
+    }
+  }, [userData]);
+
+  const handleUpdate = (field) => {
     toast.success(`${field} updated successfully!`, {
       position: toast.POSITION.TOP_RIGHT,
     });
   };
-
+  if (error) {
+    return <NothingToShow />;
+  }
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="min-h-screen flex flex-col items-center">
       {/* Profile Header */}
@@ -52,9 +79,9 @@ const UserProfile = () => {
         <div className="max-w-3xl mx-auto flex flex-col items-center">
           <div className="relative w-32 h-32 mb-4">
             <img
-              src={photoURL || "https://via.placeholder.com/150"}
+              src={photoURL}
               alt="Profile"
-              className="w-full h-full object-cover rounded-full border-4 border-white"
+              className="bg-white w-full h-full object-cover rounded-full border-4 border-white"
             />
             <button
               className="absolute bottom-2 right-2 bg-white text-primary p-2 rounded-full shadow hover:bg-gray-200"
@@ -65,7 +92,7 @@ const UserProfile = () => {
           </div>
           <div className="flex gap-2 items-center">
             <h1 className="text-xl lg:text-3xl font-bold">
-              {userData.displayName}{" "}
+              {userData?.displayName}{" "}
             </h1>
             {userData?.isVerified && (
               <span>
@@ -73,13 +100,13 @@ const UserProfile = () => {
               </span>
             )}
           </div>
-          <p className="text-base lg:text-xl mt-2">{userData.email}</p>
+          <p className="text-base lg:text-xl mt-2">{userData?.email}</p>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="w-full flex flex-col items-center py-4">
-        <div className="w-full space-y-4">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Salary div */}
           <div className="bg-white p-4 shadow rounded-lg">
             <h2 className="text-lg font-medium mb-4 flex items-center text-black">
@@ -87,12 +114,14 @@ const UserProfile = () => {
               User Role
             </h2>
             <div className="flex flex-col gap-4">
-              <div className="w-full lg:w-1/2 flex justify-between">
+              <div className="w-full flex justify-between">
                 <span className="text-gray-700">
                   {role === "hr_executive"
                     ? "HR Executive"
                     : role === "employee"
                     ? "Employee"
+                    : role === "admin"
+                    ? "Admin"
                     : "Not Assigned"}
                 </span>
                 <FaRegEdit
@@ -101,7 +130,7 @@ const UserProfile = () => {
                 />
               </div>
               {roleUpdate && (
-                <div className="w-full lg:w-1/2 flex">
+                <div className="w-full flex">
                   <select
                     id="role"
                     name="role"
@@ -127,7 +156,7 @@ const UserProfile = () => {
               Designation
             </h2>
             <div className="flex flex-col gap-4">
-              <div className="w-full lg:w-1/2 flex justify-between">
+              <div className="w-full flex justify-between">
                 <span className="text-gray-700">
                   {designation || "Not Assigned"}
                 </span>
@@ -137,7 +166,7 @@ const UserProfile = () => {
                 />
               </div>
               {designationUpdate && (
-                <div className="w-full lg:w-1/2 flex">
+                <div className="w-full flex">
                   <select
                     id="designation"
                     name="designation"
@@ -169,7 +198,7 @@ const UserProfile = () => {
               Salary (per hour)
             </h2>
             <div className="flex flex-col gap-4">
-              <div className="w-full lg:w-1/2 flex justify-between">
+              <div className="w-full flex justify-between">
                 <span className="text-gray-700">{salary || "Not Set"}</span>
                 <FaRegEdit
                   onClick={() => setSalaryUpdate(!salaryUpdate)}
@@ -177,7 +206,7 @@ const UserProfile = () => {
                 />
               </div>
               {salaryUpdate && (
-                <div className="w-full lg:w-1/2 flex">
+                <div className="w-full flex">
                   <input
                     type="number"
                     placeholder="Enter Salary (Per Hour)"
@@ -197,7 +226,7 @@ const UserProfile = () => {
               Bank Account
             </h2>
             <div className="flex flex-col gap-4">
-              <div className="w-full lg:w-1/2 flex justify-between">
+              <div className="w-full flex justify-between">
                 <span className="text-gray-700">
                   {bankAccount || "Need To Update"}
                 </span>
@@ -207,7 +236,7 @@ const UserProfile = () => {
                 />
               </div>
               {accountUpdate && (
-                <div className="w-full lg:w-1/2 flex">
+                <div className="w-full flex">
                   <input
                     type="number"
                     placeholder="Enter Account No"

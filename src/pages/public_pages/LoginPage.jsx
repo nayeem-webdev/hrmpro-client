@@ -45,9 +45,9 @@ const LoginPage = () => {
           userRole: "",
           isVerified: false,
           isFired: false,
-          Details: {
-            BankAccount: "",
-            Salary: 0,
+          details: {
+            bankAccount: "",
+            salary: 0,
             designation: "",
           },
         };
