@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GoogleAuthProvider } from "firebase/auth";
 import Google from "../../assets/Google";
+import { API } from "../../api/API";
 
 const LoginPage = () => {
   const { loginWithPopUp, loginWithPassword, setUser, loading } =
@@ -34,10 +35,38 @@ const LoginPage = () => {
   const handleGoogleLogin = () => {
     loginWithPopUp(googleProvider)
       .then((res) => {
-        const usr = res.user;
-        setUser(usr);
-        toast.success("You are Logged in!");
-        navigate("/dashboard");
+        const user = res.user;
+        setUser(user);
+        const newUser = {
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: "https://i.ibb.co.com/nRm6fz9/Png-Item-5067022.png",
+          uid: user.uid,
+          userRole: "",
+          isVerified: false,
+          isFired: false,
+          Details: {
+            BankAccount: "",
+            Salary: 0,
+            designation: "",
+          },
+        };
+        API.post("/user", newUser)
+          .then((res) => {
+            console.log(res);
+            if (res.data.insertedIs) {
+              navigate("/dashboard/user-profile");
+              toast.success("Welcome Please Update Your Profile");
+            } else {
+              navigate("/dashboard");
+
+              toast.success("You are Logged in!");
+            }
+          })
+          .catch((err) => {
+            console.error("Error Creating Item:", err.message);
+            toast.error("Failed to Add User!");
+          });
       })
       .catch((err) => {
         console.log(err.message);
