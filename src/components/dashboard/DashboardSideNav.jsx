@@ -1,13 +1,14 @@
 import { NavLink } from "react-router-dom";
 import { IoCashOutline } from "react-icons/io5";
+import { PiUserList } from "react-icons/pi";
 
 import {
   AiFillDashboard,
   AiOutlineBarChart,
+  AiOutlineMail,
   AiOutlineUnorderedList,
   AiOutlineUser,
 } from "react-icons/ai";
-import { FaHome } from "react-icons/fa";
 import PropTypes from "prop-types";
 
 const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
@@ -32,6 +33,16 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
               }
             >
               <AiFillDashboard /> Dashboard
+            </NavLink>
+            <NavLink
+              to="/dashboard/user-profile"
+              className={({ isActive }) =>
+                `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                  isActive ? "bg-primary text-white" : ""
+                }`
+              }
+            >
+              <AiOutlineUser /> User Profile
             </NavLink>
             {employee && (
               <>
@@ -67,7 +78,8 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
                     }`
                   }
                 >
-                  <AiOutlineUser /> Employee List
+                  <PiUserList />
+                  Employee List
                 </NavLink>
                 <NavLink
                   to="/dashboard/progress"
@@ -91,7 +103,8 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
                     }`
                   }
                 >
-                  <AiOutlineUser /> Employee List
+                  <PiUserList />
+                  Employee List
                 </NavLink>
                 <NavLink
                   to="/dashboard/payroll"
@@ -103,17 +116,19 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
                 >
                   <IoCashOutline /> Payroll
                 </NavLink>
+                <NavLink
+                  to="/dashboard/mails"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                      isActive ? "bg-primary text-white" : ""
+                    }`
+                  }
+                >
+                  <AiOutlineMail /> Mails
+                </NavLink>
               </>
             )}
           </div>
-
-          {/* Home Button */}
-          <NavLink
-            to="/"
-            className=" mt-8 flex items-center gap-2 px-4 py-2 bg-white lg:bg-black text-black lg:text-white hover:bg-black/80 hover/90 w-full justify-center"
-          >
-            <FaHome /> Back to Home Page
-          </NavLink>
         </div>
       </nav>
 
