@@ -38,7 +38,7 @@ const DashboardNavbar = ({ toggleSidebar, isOpen }) => {
           </div>
           <img
             src={
-              user?.providerData?.photoURL ||
+              user?.photoURL ||
               "https://i.ibb.co.com/nRm6fz9/Png-Item-5067022.png"
             }
             alt="User"

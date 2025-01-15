@@ -3,18 +3,18 @@ import AuthContext from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { API } from "../../api/API";
-import auth from "../firebase/firebase.init";
 
-
-const imageHostApi = `https://api.imgbb.com/1/upload?key${
+const imageHostApi = `https://api.imgbb.com/1/upload?key=${
   import.meta.env.VITE_IMG_HOST_KEY
 }`;
+
 const SignUpPage = () => {
-  const { createUser, updateUser, loading, setLoading } =
-    useContext(AuthContext);
+  const { createUser, updateUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Pass verify
+  const [loading, setLoading] = useState(false);
+
+  //$$ Pass Verify
   const [passFocus, setPassFocus] = useState(false);
   const [isLong, setIsLong] = useState(false);
   const [hasUppercase, setHasUppercase] = useState(false);
@@ -23,14 +23,14 @@ const SignUpPage = () => {
 
   const verifyPass = (e) => {
     const passValue = e.target.value;
-
-    // Check Characters
     setHasUppercase(/[A-Z]/.test(passValue));
     setHasLowercase(/[a-z]/.test(passValue));
     setHasSymbol(/[!@#$%*]/.test(passValue));
     setIsLong(passValue.length >= 8);
   };
+  //$$ Pass Verify
 
+  //$$ Form Values
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -39,42 +39,64 @@ const SignUpPage = () => {
   const [bankAccountNo, setBankAccountNo] = useState("");
   const [salaryAmount, setSalaryAmount] = useState("");
 
-  const newUser = {
-    email: email,
-    displayName: name,
-    photoURL: 0,
-    uid: 1,
-    userRole: role,
-    isVerified: false,
-    isFired: false,
-    details: {
-      bankAccount: bankAccountNo,
-      salary: parseFloat(salaryAmount),
-      designation: designation,
-    },
-  };
+  // Handle Register
   const handleRegister = async (e) => {
     e.preventDefault();
-    const imageFile = { image: e.target.elements.uploadImage.files[0] };
-
+    setLoading(true);
     if (isLong && hasSymbol && hasLowercase && hasUppercase) {
-      setLoading;
       createUser(email, pass)
         .then(async () => {
-          const res = await API.post(imageHostApi, imageFile, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
-          const photoURL = res.data.data.display_url;
-          updateUser(name, photoURL).then(() => {
-            toast.success("User Register Successful!");
-            navigate("/dashboard");
-          });
+          // ?? image
+          const fileInput = e.target.elements.uploadImage.files[0];
+          if (!fileInput) {
+            toast.error("Choose A valid Image File");
+            setLoading(false);
+            return;
+          }
+          const formData = new FormData();
+          formData.append("image", fileInput);
+          try {
+            const response = await API.post(imageHostApi, formData, {
+              headers: { "Content-Type": "multipart/form-data" },
+            });
+            const PhotoURL = response.data.data.display_url; // Use this directly
+            updateUser(name, PhotoURL).then(() => {
+              const newUser = {
+                email: email,
+                displayName: name,
+                photoURL: PhotoURL,
+                uid: 1,
+                userRole: role,
+                isVerified: false,
+                isFired: false,
+                details: {
+                  bankAccount: bankAccountNo,
+                  salary: parseFloat(salaryAmount),
+                  designation: designation,
+                },
+              };
+              API.post("/user", newUser)
+                .then(() => {
+                  setLoading(false);
+                  navigate("/dashboard");
+                  toast.success("User Register Successful!");
+                })
+                .catch((err) => {
+                  setLoading(false);
+                  console.error("Error Creating Item:", err.message);
+                  toast.error("Failed to Add User!");
+                });
+            });
+          } catch (err) {
+            setLoading(false);
+            console.error("Upload Error:", err);
+          }
+          // ?? image
         })
         .catch((err) => {
+          setLoading(false);
           console.log(err.message);
-          toast.error("User Register Failed firebase!");
+          toast.error("User Register Failed!");
         });
     }
   };
@@ -321,7 +343,18 @@ const SignUpPage = () => {
               className="mt-4 w-full bg-primary text-white py-2 rounded-md font-medium hover:bg-primary/70 transition"
               disabled={loading}
             >
-              {loading ? "Signing Up..." : "Sign Up"}
+              <div className="flex items-center justify-center">
+                {loading ? (
+                  <span className="flex space-x-1">
+                    <span className="animate-pulse">Signing Up</span>
+                    <span className="animate-pulse">.</span>
+                    <span className="animate-pulse">.</span>
+                    <span className="animate-pulse">.</span>
+                  </span>
+                ) : (
+                  "Sign Up"
+                )}
+              </div>
             </button>
           </form>
 
