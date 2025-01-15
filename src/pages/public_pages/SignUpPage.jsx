@@ -45,7 +45,8 @@ const SignUpPage = () => {
     setLoading(true);
     if (isLong && hasSymbol && hasLowercase && hasUppercase) {
       createUser(email, pass)
-        .then(async () => {
+        .then(async (res) => {
+          const uid = res.user.uid;
           // ?? image
           const fileInput = e.target.elements.uploadImage.files[0];
           if (!fileInput) {
@@ -59,13 +60,13 @@ const SignUpPage = () => {
             const response = await API.post(imageHostApi, formData, {
               headers: { "Content-Type": "multipart/form-data" },
             });
-            const PhotoURL = response.data.data.display_url; // Use this directly
+            const PhotoURL = response.data.data.display_url;
             updateUser(name, PhotoURL).then(() => {
               const newUser = {
                 email: email,
                 displayName: name,
                 photoURL: PhotoURL,
-                uid: 1,
+                uid: uid,
                 userRole: role,
                 isVerified: false,
                 isFired: false,
@@ -76,7 +77,8 @@ const SignUpPage = () => {
                 },
               };
               API.post("/user", newUser)
-                .then(() => {
+                .then((res) => {
+                  console.log(res.data);
                   setLoading(false);
                   navigate("/dashboard");
                   toast.success("User Register Successful!");
@@ -91,7 +93,6 @@ const SignUpPage = () => {
             setLoading(false);
             console.error("Upload Error:", err);
           }
-          // ?? image
         })
         .catch((err) => {
           setLoading(false);
@@ -124,9 +125,9 @@ const SignUpPage = () => {
             Register Your Account
           </h1>
 
-          {/* Sign-Up Form */}
+          {/* SignUp Form */}
           <form onSubmit={handleRegister} className="space-y-4">
-            {/* Name Field */}
+            {/* Name */}
             <div>
               <label
                 htmlFor="fullName"
@@ -145,7 +146,7 @@ const SignUpPage = () => {
               />
             </div>
 
-            {/* Email Field */}
+            {/* Email */}
             <div>
               <label
                 htmlFor="email"
@@ -164,7 +165,7 @@ const SignUpPage = () => {
               />
             </div>
 
-            {/* Password Field */}
+            {/* Password */}
             <div>
               <label
                 htmlFor="password"
@@ -184,7 +185,7 @@ const SignUpPage = () => {
                 onChange={passOnChange}
               />
 
-              {/* Password Validation */}
+              {/* Password */}
               {passFocus && (
                 <ul className="text-sm text-gray-500 mt-2">
                   <li
@@ -219,7 +220,7 @@ const SignUpPage = () => {
               )}
             </div>
 
-            {/* Role Selection */}
+            {/* Role */}
             <div>
               <label
                 htmlFor="role"
@@ -244,7 +245,7 @@ const SignUpPage = () => {
               </select>
             </div>
 
-            {/* Show additional fields for Employee role */}
+            {/* additional fields for Employee */}
             {role === "employee" && (
               <>
                 {/* Designation Field */}
@@ -276,7 +277,7 @@ const SignUpPage = () => {
                   </select>
                 </div>
 
-                {/* Bank Account Number Field */}
+                {/* Bank Account */}
                 <div>
                   <label
                     htmlFor="bankAccountNo"
@@ -294,7 +295,7 @@ const SignUpPage = () => {
                   />
                 </div>
 
-                {/* Salary Amount Field */}
+                {/* Salary Amount */}
                 <div>
                   <label
                     htmlFor="salaryAmount"
@@ -314,7 +315,7 @@ const SignUpPage = () => {
               </>
             )}
 
-            {/* Img Upload Section */}
+            {/* Img Upload */}
             <div className="flex flex-col items-start">
               <label
                 htmlFor="uploadImage"
@@ -337,7 +338,7 @@ const SignUpPage = () => {
               </p>
             </div>
 
-            {/* Sign Up Button */}
+            {/* SignUp Button */}
             <button
               type="submit"
               className="mt-4 w-full bg-primary text-white py-2 rounded-md font-medium hover:bg-primary/70 transition"
@@ -346,10 +347,7 @@ const SignUpPage = () => {
               <div className="flex items-center justify-center">
                 {loading ? (
                   <span className="flex space-x-1">
-                    <span className="animate-pulse">Signing Up</span>
-                    <span className="animate-pulse">.</span>
-                    <span className="animate-pulse">.</span>
-                    <span className="animate-pulse">.</span>
+                    <span className="animate-pulse">Signing Up . . . </span>
                   </span>
                 ) : (
                   "Sign Up"
@@ -358,7 +356,7 @@ const SignUpPage = () => {
             </button>
           </form>
 
-          {/* Link to Login Page */}
+          {/* Link Login Page */}
           <div className="mt-6 text-center text-sm">
             <p className="text-gray-600">
               Already have an account?{" "}

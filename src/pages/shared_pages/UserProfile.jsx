@@ -69,7 +69,9 @@ const UserProfile = () => {
     return <NothingToShow />;
   }
   if (isLoading) {
-    return <Loading />;
+    return (
+      <Loading bg="https://i.ibb.co.com/SrX98Xj/Employee-Management.gif" />
+    );
   }
   return (
     <div className="min-h-screen flex flex-col items-center">

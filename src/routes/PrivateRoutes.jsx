@@ -7,7 +7,9 @@ import Loading from "../components/shared/Loading";
 const PrivateRoutes = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
   if (loading) {
-    return <Loading />;
+    return (
+      <Loading bg="https://i.ibb.co.com/SrX98Xj/Employee-Management.gif" />
+    );
   } else if (user) {
     return children;
   } else {
