@@ -25,18 +25,17 @@ const UserProfile = () => {
     data: userData,
     error,
     isLoading,
+    refetch,
   } = useQuery({
     queryKey: ["userData", user?.uid],
     queryFn: async () => {
       const res = await API.get(`/user/${user?.uid}`);
-      console.log(res);
       if (res.data) {
         return res.data;
       }
       throw new Error("Failed to fetch user data");
     },
   });
-  console.log(userData);
 
   //   Open Close Update Form
   const [designationUpdate, setDesignationUpdate] = useState(false);
@@ -53,18 +52,33 @@ const UserProfile = () => {
   useEffect(() => {
     if (userData) {
       setPhotoURL(userData?.photoURL);
-      setSalary(userData?.Details?.Salary || "");
-      setDesignation(userData?.Details?.designation || "");
-      setRole(userData?.userRole || "");
-      setBankAccount(userData?.details?.BankAccount || "");
+      setSalary(userData?.details?.salary);
+      setDesignation(userData?.details?.designation);
+      setRole(userData?.userRole);
+      setBankAccount(userData?.details?.bankAccount);
     }
   }, [userData]);
 
-  const handleUpdate = (field) => {
-    toast.success(`${field} updated successfully!`, {
-      position: toast.POSITION.TOP_RIGHT,
-    });
+  const handleUpdate = (field, value) => {
+    const updateData = {
+      [field]: value,
+    };
+    console.log(updateData);
+    API.patch(`/user/${userData?._id}`, updateData)
+      .then(() => {
+        toast.success(`updated to ${value}  successfully!`);
+        setRoleUpdate(false);
+        setSalaryUpdate(false);
+        setAccountUpdate(false);
+        setDesignationUpdate(false);
+        refetch();
+      })
+      .catch((err) => {
+        console.log(err.message);
+        toast.error(`Failed to update ${field}`);
+      });
   };
+
   if (error) {
     return <NothingToShow />;
   }
@@ -84,10 +98,7 @@ const UserProfile = () => {
               alt="Profile"
               className="bg-white w-full h-full object-cover rounded-full border-4 border-white"
             />
-            <button
-              className="absolute bottom-2 right-2 bg-white text-primary p-2 rounded-full shadow hover:bg-gray-200"
-              onClick={() => handleUpdate("Image", "new image")}
-            >
+            <button className="absolute bottom-2 right-2 bg-white text-primary p-2 rounded-full shadow hover:bg-gray-200">
               <FaCamera />
             </button>
           </div>
@@ -141,7 +152,10 @@ const UserProfile = () => {
                     <option value="employee">Employee</option>
                     <option value="hr_executive">HR Executive</option>
                   </select>
-                  <button className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80">
+                  <button
+                    onClick={() => handleUpdate("userRole", role)}
+                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80"
+                  >
                     <GrDocumentUpdate />
                   </button>
                 </div>
@@ -184,7 +198,12 @@ const UserProfile = () => {
                     <option value="Customer Support">Customer Support</option>
                     <option value="Admin Executive">Admin Executive</option>
                   </select>
-                  <button className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80">
+                  <button
+                    onClick={() =>
+                      handleUpdate("details.designation", designation)
+                    }
+                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80"
+                  >
                     <GrDocumentUpdate />
                   </button>
                 </div>
@@ -212,8 +231,12 @@ const UserProfile = () => {
                     type="number"
                     placeholder="Enter Salary (Per Hour)"
                     className="p-2 border rounded-tl-md rounded-bl-md w-full text-gray-700"
+                    onChange={(e) => setSalary(e.target.value)}
                   />
-                  <button className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80">
+                  <button
+                    onClick={() => handleUpdate("details.salary", salary)}
+                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80"
+                  >
                     <GrDocumentUpdate />
                   </button>
                 </div>
@@ -242,8 +265,14 @@ const UserProfile = () => {
                     type="number"
                     placeholder="Enter Account No"
                     className="p-2 border rounded-tl-md rounded-bl-md w-full text-gray-700"
+                    onChange={(e) => setBankAccount(e.target.value)}
                   />
-                  <button className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80">
+                  <button
+                    onClick={() =>
+                      handleUpdate("details.bankAccount", bankAccount)
+                    }
+                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80"
+                  >
                     <GrDocumentUpdate />
                   </button>
                 </div>

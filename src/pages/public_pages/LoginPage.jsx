@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -7,13 +7,15 @@ import Google from "../../assets/Google";
 import { API } from "../../api/API";
 
 const LoginPage = () => {
-  const { loginWithPopUp, loginWithPassword, setUser, loading } =
+  const { loginWithPopUp, loginWithPassword, setUser } =
     useContext(AuthContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // Handle Password Login
   const handlePasswordLogin = (e) => {
     e.preventDefault();
+    setLoading(true);
     const form = e.target;
     const emailLogin = form.emailLogin.value;
     const passwordLogin = form.passwordLogin.value;
@@ -22,10 +24,12 @@ const LoginPage = () => {
         const usr = res.user;
         setUser(usr);
         toast.success("You are Logged in!");
+        setLoading(false);
         navigate("/dashboard");
       })
       .catch((err) => {
         console.log(err.message);
+        setLoading(false);
         toast.error("User Login Failed!");
       });
   };
@@ -138,7 +142,15 @@ const LoginPage = () => {
               className="mt-4 w-full bg-primary text-white py-[10px] rounded-md font-medium hover:bg-primary/70 transition"
               disabled={loading}
             >
-              {loading ? "Logging In..." : "Log In"}
+              <div className="flex items-center justify-center">
+                {loading ? (
+                  <span className="flex space-x-1">
+                    <span className="animate-pulse">Signing Up . . . </span>
+                  </span>
+                ) : (
+                  "Sign Up"
+                )}
+              </div>
             </button>
           </form>
 
@@ -146,6 +158,7 @@ const LoginPage = () => {
           <div className="mt-4">
             <button
               onClick={handleGoogleLogin}
+              disabled={loading}
               className="w-full bg-white text-primary border-2 border-primary py-2 rounded-md font-medium flex justify-center items-center gap-2 hover:bg-google/70 transition"
             >
               <Google />

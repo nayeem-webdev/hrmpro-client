@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import DashboardNavbar from "../components/dashboard/DashboardNavbar";
 import DashboardSideNav from "../components/dashboard/DashboardSideNav";
+import { ToastContainer } from "react-toastify";
 
 const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ const DashboardLayout = () => {
   };
   return (
     <>
+      <ToastContainer />
       <DashboardNavbar toggleSidebar={toggleSidebar} isOpen={isOpen} />
       <div className="flex h-screen text-black dark:text-white py-[64px]">
         <DashboardSideNav toggleSidebar={toggleSidebar} isOpen={isOpen} />
