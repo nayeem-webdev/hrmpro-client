@@ -37,7 +37,6 @@ const UserProfile = () => {
     },
   });
   console.log(userData);
-  console.log(userData);
 
   //   Open Close Update Form
   const [designationUpdate, setDesignationUpdate] = useState(false);

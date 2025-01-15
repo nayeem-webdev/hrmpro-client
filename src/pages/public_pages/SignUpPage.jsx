@@ -2,9 +2,16 @@ import { useState, useContext } from "react";
 import AuthContext from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { API } from "../../api/API";
+import auth from "../firebase/firebase.init";
 
+
+const imageHostApi = `https://api.imgbb.com/1/upload?key${
+  import.meta.env.VITE_IMG_HOST_KEY
+}`;
 const SignUpPage = () => {
-  const { createUser, updateUser, loading } = useContext(AuthContext);
+  const { createUser, updateUser, loading, setLoading } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   // Pass verify
@@ -13,11 +20,6 @@ const SignUpPage = () => {
   const [hasUppercase, setHasUppercase] = useState(false);
   const [hasLowercase, setHasLowercase] = useState(false);
   const [hasSymbol, setHasSymbol] = useState(false);
-
-  const [role, setRole] = useState("employee");
-  const [designation, setDesignation] = useState("");
-  const [bankAccountNo, setBankAccountNo] = useState("");
-  const [salaryAmount, setSalaryAmount] = useState("");
 
   const verifyPass = (e) => {
     const passValue = e.target.value;
@@ -29,27 +31,57 @@ const SignUpPage = () => {
     setIsLong(passValue.length >= 8);
   };
 
-  const handleRegister = (e) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [role, setRole] = useState("");
+  const [designation, setDesignation] = useState("");
+  const [bankAccountNo, setBankAccountNo] = useState("");
+  const [salaryAmount, setSalaryAmount] = useState("");
+
+  const newUser = {
+    email: email,
+    displayName: name,
+    photoURL: 0,
+    uid: 1,
+    userRole: role,
+    isVerified: false,
+    isFired: false,
+    details: {
+      bankAccount: bankAccountNo,
+      salary: parseFloat(salaryAmount),
+      designation: designation,
+    },
+  };
+  const handleRegister = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    const fullName = form.fullName.value;
-    const photoUrl = form.photoUrl.value;
-    const emailRegister = form.emailRegister.value;
-    const passwordRegister = form.passwordRegister.value;
+    const imageFile = { image: e.target.elements.uploadImage.files[0] };
 
     if (isLong && hasSymbol && hasLowercase && hasUppercase) {
-      createUser(emailRegister, passwordRegister)
-        .then(() => {
-          updateUser(fullName, photoUrl).then(() => {
+      setLoading;
+      createUser(email, pass)
+        .then(async () => {
+          const res = await API.post(imageHostApi, imageFile, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          const photoURL = res.data.data.display_url;
+          updateUser(name, photoURL).then(() => {
             toast.success("User Register Successful!");
             navigate("/dashboard");
           });
         })
         .catch((err) => {
           console.log(err.message);
-          toast.error("User Register Failed!");
+          toast.error("User Register Failed firebase!");
         });
     }
+  };
+
+  const passOnChange = (e) => {
+    verifyPass(e);
+    setPass(e.target.value);
   };
 
   return (
@@ -61,9 +93,7 @@ const SignUpPage = () => {
           backgroundImage:
             "url(https://images.pexels.com/photos/2110951/pexels-photo-2110951.jpeg)",
         }}
-      >
-        {/* You can add any content you want inside here */}
-      </div>
+      ></div>
 
       {/* Right: Form Section */}
       <div className=" lg:w-1/2 w-full flex justify-center items-center lg:px-10 px-6 lg:py-20">
@@ -77,10 +107,10 @@ const SignUpPage = () => {
             {/* Name Field */}
             <div>
               <label
-                htmlFor="name"
+                htmlFor="fullName"
                 className="block text-sm font-medium text-gray-700"
               >
-                Name
+                Name <span className="text-red-600">*</span>
               </label>
               <input
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
@@ -89,6 +119,7 @@ const SignUpPage = () => {
                 name="fullName"
                 placeholder="Full Name"
                 required
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
 
@@ -98,15 +129,16 @@ const SignUpPage = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email Address
+                Email Address <span className="text-red-600">*</span>
               </label>
               <input
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
                 type="email"
-                id="emailRegister"
-                name="emailRegister"
+                id="email"
+                name="email"
                 placeholder="Email address"
                 required
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -116,53 +148,54 @@ const SignUpPage = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
-                Password
+                Password <span className="text-red-600">*</span>
               </label>
               <input
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
                 type="password"
-                id="passwordRegister"
-                name="passwordRegister"
+                id="password"
+                name="password"
                 placeholder="Password"
                 onFocus={() => setPassFocus(true)}
-                onChange={verifyPass}
+                onBlur={() => setPassFocus(false)}
                 required
+                onChange={passOnChange}
               />
-            </div>
 
-            {/* Password Validation Rules */}
-            {passFocus && (
-              <ul className="text-sm text-gray-500 mt-2">
-                <li
-                  className={`text-[12px] ${
-                    hasUppercase ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  Must have an uppercase letter.
-                </li>
-                <li
-                  className={`text-[12px] ${
-                    hasLowercase ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  Must have a lowercase letter.
-                </li>
-                <li
-                  className={`text-[12px] ${
-                    hasSymbol ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  Must have a symbol ! @ # $ % *.
-                </li>
-                <li
-                  className={`text-[12px] ${
-                    isLong ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  Must be 8 characters long.
-                </li>
-              </ul>
-            )}
+              {/* Password Validation */}
+              {passFocus && (
+                <ul className="text-sm text-gray-500 mt-2">
+                  <li
+                    className={`text-[12px] ${
+                      hasUppercase ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    Must have an uppercase letter.
+                  </li>
+                  <li
+                    className={`text-[12px] ${
+                      hasLowercase ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    Must have a lowercase letter.
+                  </li>
+                  <li
+                    className={`text-[12px] ${
+                      hasSymbol ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    Must have a symbol ! @ # $ % *.
+                  </li>
+                  <li
+                    className={`text-[12px] ${
+                      isLong ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    Must be 8 characters long.
+                  </li>
+                </ul>
+              )}
+            </div>
 
             {/* Role Selection */}
             <div>
@@ -170,15 +203,20 @@ const SignUpPage = () => {
                 htmlFor="role"
                 className="block text-sm font-medium text-gray-700"
               >
-                Role
+                Role <span className="text-red-600">*</span>
               </label>
               <select
                 id="role"
                 name="role"
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                value={role}
+                defaultValue=""
+                required
                 onChange={(e) => setRole(e.target.value)}
               >
+                <option value="" disabled>
+                  Select Role
+                </option>
+
                 <option value="employee">Employee</option>
                 <option value="hr_executive">HR Executive</option>
               </select>
@@ -193,16 +231,18 @@ const SignUpPage = () => {
                     htmlFor="designation"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Designation
+                    Designation <span className="text-red-600">*</span>
                   </label>
                   <select
                     id="designation"
                     name="designation"
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                    value={designation}
+                    defaultValue=""
                     onChange={(e) => setDesignation(e.target.value)}
                   >
-                    <option value="">Select Designation</option>
+                    <option value="" disabled>
+                      Select Designation
+                    </option>
                     <option value="Sales Assistant">Sales Assistant</option>
                     <option value="Social Media Executive">
                       Social Media Executive
@@ -220,7 +260,7 @@ const SignUpPage = () => {
                     htmlFor="bankAccountNo"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Bank Account No
+                    Bank Account No <span className="text-red-600">*</span>
                   </label>
                   <input
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
@@ -228,7 +268,6 @@ const SignUpPage = () => {
                     id="bankAccountNo"
                     name="bankAccountNo"
                     placeholder="Enter Bank Account No"
-                    value={bankAccountNo}
                     onChange={(e) => setBankAccountNo(e.target.value)}
                   />
                 </div>
@@ -239,7 +278,7 @@ const SignUpPage = () => {
                     htmlFor="salaryAmount"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Salary Amount
+                    Salary Amount <span className="text-red-600">*</span>
                   </label>
                   <input
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
@@ -247,12 +286,34 @@ const SignUpPage = () => {
                     id="salaryAmount"
                     name="salaryAmount"
                     placeholder="Enter Salary Amount"
-                    value={salaryAmount}
                     onChange={(e) => setSalaryAmount(e.target.value)}
                   />
                 </div>
               </>
             )}
+
+            {/* Img Upload Section */}
+            <div className="flex flex-col items-start">
+              <label
+                htmlFor="uploadImage"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Upload Image <span className="text-red-600">*</span>
+              </label>
+
+              <input
+                type="file"
+                id="uploadImage"
+                name="uploadImage"
+                accept="image/*"
+                className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-primary hover:file:bg-blue-100"
+                required
+              />
+
+              <p className="mt-2 text-sm text-gray-500">
+                Supported formats: JPG, PNG, GIF (Max: 5MB).
+              </p>
+            </div>
 
             {/* Sign Up Button */}
             <button

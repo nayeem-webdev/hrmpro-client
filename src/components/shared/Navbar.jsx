@@ -8,6 +8,7 @@ import AuthContext from "../../context/AuthContext";
 const Navbar = () => {
   const { user, logoutUser, setUser } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  console.log(user);
 
   const navLinks = [
     {
