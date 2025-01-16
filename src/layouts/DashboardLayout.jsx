@@ -15,7 +15,7 @@ const DashboardLayout = () => {
     <>
       <ToastContainer />
       <DashboardNavbar toggleSidebar={toggleSidebar} isOpen={isOpen} />
-      <div className="flex h-screen text-black dark:text-white py-[64px]">
+      <div className="flex h-screen text-black py-[64px]">
         <DashboardSideNav toggleSidebar={toggleSidebar} isOpen={isOpen} />
 
         {/* Outlet */}

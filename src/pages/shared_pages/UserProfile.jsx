@@ -154,7 +154,7 @@ const UserProfile = () => {
                   </select>
                   <button
                     onClick={() => handleUpdate("userRole", role)}
-                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80"
+                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary/80"
                   >
                     <GrDocumentUpdate />
                   </button>
@@ -202,7 +202,7 @@ const UserProfile = () => {
                     onClick={() =>
                       handleUpdate("details.designation", designation)
                     }
-                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80"
+                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary/80"
                   >
                     <GrDocumentUpdate />
                   </button>
@@ -235,7 +235,7 @@ const UserProfile = () => {
                   />
                   <button
                     onClick={() => handleUpdate("details.salary", salary)}
-                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80"
+                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary/80"
                   >
                     <GrDocumentUpdate />
                   </button>
@@ -271,7 +271,7 @@ const UserProfile = () => {
                     onClick={() =>
                       handleUpdate("details.bankAccount", bankAccount)
                     }
-                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary-dark hover:bg-primary/80"
+                    className="bg-primary text-white px-4 py-2 rounded-tr-md rounded-br-md hover:bg-primary/80"
                   >
                     <GrDocumentUpdate />
                   </button>

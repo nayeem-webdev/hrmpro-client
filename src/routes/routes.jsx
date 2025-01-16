@@ -1,17 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import ErrorPage from "../pages/public_pages/ErrorPage";
-import Home from "../pages/public_pages/Home";
-// import SignUpPage from "../pages/public_pages/SignUpPage";
-import TestPage from "../../other_compo/TestPage";
-import ContactUs from "../pages/public_pages/ContactUs";
-import AboutPage from "../pages/public_pages/AboutPage";
-import LoginPage from "../pages/public_pages/LoginPage";
+import ErrorPage from "../pages/public-pages/ErrorPage.jsx";
+import Home from "../pages/public-pages/Home.jsx";
+import ContactUs from "../pages/public-pages/ContactUs.jsx";
+import AboutPage from "../pages/public-pages/AboutPage.jsx";
+import LoginPage from "../pages/public-pages/LoginPage.jsx";
 import DashboardLayout from "../layouts/DashboardLayout";
 import UserProfile from "../pages/shared_pages/UserProfile";
 import PrivateRoutes from "./PrivateRoutes";
-import ImageUploadPage from "../../other_compo/ImageUploadPage.jsx";
-import SignUpPage from "../pages/public_pages/SignUpPage.jsx";
+import SignUpPage from "../pages/public-pages/SignUpPage.jsx";
+import WorkSheet from "../pages/employee-pages/WorkSheet.jsx";
+import PaymentHistory from "../pages/employee-pages/PaymentHistory.jsx";
 
 const routes = createBrowserRouter([
   {
@@ -39,10 +38,6 @@ const routes = createBrowserRouter([
         path: "/about",
         element: <AboutPage />,
       },
-      {
-        path: "/up",
-        element: <ImageUploadPage />,
-      },
     ],
   },
   {
@@ -56,7 +51,27 @@ const routes = createBrowserRouter([
     children: [
       {
         path: "user-profile",
-        element: <UserProfile />,
+        element: (
+          <PrivateRoutes>
+            <UserProfile />,
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "work-sheet",
+        element: (
+          <PrivateRoutes>
+            <WorkSheet />,
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "payment-history",
+        element: (
+          <PrivateRoutes>
+            <PaymentHistory />,
+          </PrivateRoutes>
+        ),
       },
     ],
   },
