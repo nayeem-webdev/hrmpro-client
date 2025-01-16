@@ -1,7 +1,11 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
+import DisplayDate from "../shared/DisplayDate";
+import { useLocation } from "react-router-dom";
 
 const DashboardTable = ({ data, columns }) => {
+  const location = useLocation();
+  console.log(location);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
 
   const requestSort = (key) => {
@@ -41,15 +45,25 @@ const DashboardTable = ({ data, columns }) => {
     return sortableItems;
   }, [data, sortConfig]);
 
-  // Render "Verified" or "Not Verified" badge
   const renderVerifiedBadge = (isVerified) => {
     return isVerified ? (
-      <span className="bg-green-500 text-white py-1 px-3 rounded-full">
+      <span className="bg-green-50 text-green-500 py-1 px-3 rounded-full">
         Verified
       </span>
     ) : (
-      <span className="bg-red-500 text-white py-1 px-3 rounded-full">
+      <span className="bg-red-50 text-red-500 py-1 px-3 rounded-full">
         Not Verified
+      </span>
+    );
+  };
+  const renderPaymentBadge = (paymentStatus) => {
+    return paymentStatus === "paid" ? (
+      <span className="bg-green-50 text-green-500 py-1 px-3 rounded-full">
+        Paid
+      </span>
+    ) : (
+      <span className="bg-red-50 text-red-500 py-1 px-3 rounded-full">
+        Unpaid
       </span>
     );
   };
@@ -62,7 +76,7 @@ const DashboardTable = ({ data, columns }) => {
             {columns.map((column) => (
               <th
                 key={column.accessor}
-                className="px-6 py-3 text-left font-bold text-gray-600 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 font-bold text-gray-600 uppercase text-center tracking-wider cursor-pointer"
                 onClick={() => requestSort(column.accessor)}
               >
                 {column.Header}
@@ -93,11 +107,19 @@ const DashboardTable = ({ data, columns }) => {
               {columns.map((column) => (
                 <td
                   key={column.accessor}
-                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                  className={`px-6 py-4 whitespace-nowrap text-sm text-gray-600 ${
+                    column.accessor !== "workDetails" && "text-center"
+                  } `}
                 >
-                  {column.accessor === "isVerified"
-                    ? renderVerifiedBadge(row[column.accessor])
-                    : row[column.accessor]}
+                  {column.accessor === "isVerified" ? (
+                    renderVerifiedBadge(row[column.accessor])
+                  ) : column.accessor === "paymentStatus" ? (
+                    renderPaymentBadge(row[column.accessor])
+                  ) : column.accessor === "date" ? (
+                    <DisplayDate date={row[column.accessor]} />
+                  ) : (
+                    row[column.accessor]
+                  )}
                 </td>
               ))}
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">

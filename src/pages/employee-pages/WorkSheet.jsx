@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import AddWorkForm from "../../components/employee-page-comps/AddWorkForm";
-import DashboardTable from "../../components/employee-page-comps/DashboardTable";
 import AuthContext from "../../context/AuthContext";
 import NothingToShow from "../../components/shared/NothingToShow";
 import Loading from "../../components/shared/Loading";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "../../api/API";
+import DashboardTable from "../../components/dashboard/DashboardTable";
 
 const WorkSheet = () => {
   const { user } = useContext(AuthContext);
@@ -23,12 +23,11 @@ const WorkSheet = () => {
   });
 
   const columns = [
-    { Header: "Name", accessor: "name" },
-    { Header: "Email", accessor: "email" },
-    { Header: "Designation", accessor: "position" },
-    { Header: "Role", accessor: "role" },
-    { Header: "Salary", accessor: "salary" },
-    { Header: "Verified", accessor: "isVerified" },
+    { Header: "Work Details", accessor: "workDetails" },
+    { Header: "Work Type", accessor: "work" },
+    { Header: "Time (Hr.)", accessor: "workHour" },
+    { Header: "Submission Date", accessor: "date" },
+    { Header: "Payment Status", accessor: "paymentStatus" },
   ];
 
   if (error) {
@@ -46,7 +45,7 @@ const WorkSheet = () => {
         WORK SHEET
       </h1>
 
-      <AddWorkForm />
+      <AddWorkForm refetch={refetch} />
 
       <DashboardTable columns={columns} data={data} refetch={refetch} />
     </>

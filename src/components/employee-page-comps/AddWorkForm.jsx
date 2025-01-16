@@ -1,20 +1,30 @@
 import { useContext, useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AuthContext from "../../context/AuthContext";
 import { API } from "../../api/API";
 import { toast } from "react-toastify";
+import PropTypes from "prop-types";
 
-const AddWorkForm = () => {
+const AddWorkForm = ({ refetch }) => {
   const { user } = useContext(AuthContext);
+  const [workDetails, setWorkDetails] = useState("");
   const [work, setWork] = useState("");
   const [hoursWorked, setHoursWorked] = useState("");
   const date = new Date();
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+
+    if (inputValue.length <= 30) {
+      setWorkDetails(inputValue);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newWork = {
       work: work,
+      workDetails: workDetails,
       workHour: hoursWorked,
       date: date,
       uid: user.uid,
@@ -26,6 +36,10 @@ const AddWorkForm = () => {
       .then((res) => {
         console.log(res.data);
         toast.success("Work Added Successfully");
+        refetch();
+        setWork("");
+        setHoursWorked("");
+        setWorkDetails("");
       })
       .catch((err) => {
         console.log(err.message);
@@ -38,12 +52,30 @@ const AddWorkForm = () => {
       onSubmit={handleSubmit}
       className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg shadow"
     >
-      <div>
+      <div className="relative w-full">
         <label
-          htmlFor="uploadImage"
+          htmlFor="workDetails"
           className="block text-sm text-gray-700 mb-2"
         >
-          work Type
+          Work Details
+        </label>
+        <input
+          type="text"
+          id="workDetails"
+          placeholder="Enter Work Details"
+          value={workDetails}
+          onChange={handleInputChange}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        {/* Character counter positioned bottom-right */}
+        <p className="text-xs text-gray-500 absolute bottom-2 right-3">
+          {workDetails.length}/30
+        </p>
+      </div>
+      <div>
+        <label htmlFor="workType" className="block text-sm text-gray-700 mb-2">
+          Work Type
         </label>
         <select
           value={work}
@@ -58,10 +90,7 @@ const AddWorkForm = () => {
         </select>
       </div>
       <div>
-        <label
-          htmlFor="uploadImage"
-          className="block text-sm text-gray-700 mb-2"
-        >
+        <label htmlFor="workHour" className="block text-sm text-gray-700 mb-2">
           Work Hour
         </label>
         <input
@@ -70,22 +99,6 @@ const AddWorkForm = () => {
           value={hoursWorked}
           onChange={(e) => setHoursWorked(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="uploadImage"
-          className="block text-sm text-gray-700 mb-2"
-        >
-          Work Hour
-        </label>
-
-        <DatePicker
-          selected={date}
-          dateFormat="yyyy-MM-dd"
-          required
-          readOnly
           className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>
@@ -108,4 +121,7 @@ const AddWorkForm = () => {
   );
 };
 
+AddWorkForm.propTypes = {
+  refetch: PropTypes.func.isRequired,
+};
 export default AddWorkForm;
