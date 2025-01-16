@@ -27,6 +27,7 @@ const WorkSheet = () => {
     { Header: "Work Type", accessor: "work" },
     { Header: "Time (Hr.)", accessor: "workHour" },
     { Header: "Submission Date", accessor: "date" },
+    { Header: "Total Payment", accessor: "totalPayment" },
     { Header: "Payment Status", accessor: "paymentStatus" },
   ];
 

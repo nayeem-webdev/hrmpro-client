@@ -7,9 +7,14 @@ import PropTypes from "prop-types";
 
 const AddWorkForm = ({ refetch }) => {
   const { user } = useContext(AuthContext);
+
+  API.get(`/details/${user.uid}`).then((res) => {
+    setHourRate(res.data.details.salary);
+  });
   const [workDetails, setWorkDetails] = useState("");
   const [work, setWork] = useState("");
   const [hoursWorked, setHoursWorked] = useState("");
+  const [hourRate, setHourRate] = useState(0);
   const date = new Date();
 
   const handleInputChange = (e) => {
@@ -25,7 +30,8 @@ const AddWorkForm = ({ refetch }) => {
     const newWork = {
       work: work,
       workDetails: workDetails,
-      workHour: hoursWorked,
+      workHour: parseFloat(hoursWorked),
+      totalPayment: hourRate * hoursWorked,
       date: date,
       uid: user.uid,
       name: user.displayName,
@@ -36,10 +42,10 @@ const AddWorkForm = ({ refetch }) => {
       .then((res) => {
         console.log(res.data);
         toast.success("Work Added Successfully");
-        refetch();
         setWork("");
         setHoursWorked("");
         setWorkDetails("");
+        refetch();
       })
       .catch((err) => {
         console.log(err.message);
