@@ -9,7 +9,7 @@ const AddWorkForm = () => {
   const { user } = useContext(AuthContext);
   const [work, setWork] = useState("");
   const [hoursWorked, setHoursWorked] = useState("");
-  const [date, setDate] = useState(new Date());
+  const date = new Date();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,9 +83,9 @@ const AddWorkForm = () => {
 
         <DatePicker
           selected={date}
-          onChange={(newDate) => setDate(newDate)}
           dateFormat="yyyy-MM-dd"
           required
+          readOnly
           className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>
