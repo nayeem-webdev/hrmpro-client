@@ -13,6 +13,7 @@ import WorkSheet from "../pages/employee-pages/WorkSheet.jsx";
 import PaymentHistory from "../pages/employee-pages/PaymentHistory.jsx";
 import HRRoutes from "./HRRoutes.jsx";
 import EmployeeList from "../pages/hr-pages/EmployeeList.jsx";
+import UserDetailsPage from "../components/hr-page-comps/UserDetailsPage.jsx";
 
 const routes = createBrowserRouter([
   {
@@ -80,6 +81,14 @@ const routes = createBrowserRouter([
         element: (
           <HRRoutes>
             <EmployeeList />,
+          </HRRoutes>
+        ),
+      },
+      {
+        path: "details/:id",
+        element: (
+          <HRRoutes>
+            <UserDetailsPage />,
           </HRRoutes>
         ),
       },

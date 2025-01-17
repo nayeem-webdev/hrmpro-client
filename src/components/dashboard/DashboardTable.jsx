@@ -1,14 +1,13 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import DisplayDate from "../shared/DisplayDate";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { API } from "../../api/API";
 import { toast } from "react-toastify";
 import Modal from "./Modal";
 import UpdateWorkModal from "../employee-page-comps/UpdateWorkModal";
 import { FaMoneyCheckDollar, FaShield } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa";
-import UserDetailsModal from "../hr-page-comps/UserDetailsModal";
 
 const DashboardTable = ({ data, columns, refetch }) => {
   const location = useLocation();
@@ -75,16 +74,6 @@ const DashboardTable = ({ data, columns, refetch }) => {
     );
   };
 
-  // ?? Modal Func & State & Details func
-  const [detailsId, setDetailsId] = useState("");
-  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-  const onDetailsClick = (id) => {
-    setDetailsId(id);
-    setIsDetailsModalOpen(true);
-    console.log(id, detailsId, isDetailsModalOpen);
-  };
-  // ?? Modal Func & State & Details func
-
   // ?? Modal Func & State & Pay func
   const onVerifyClick = (id) => {
     API.put(`/users/verify/${id}`)
@@ -99,6 +88,8 @@ const DashboardTable = ({ data, columns, refetch }) => {
       });
   };
   // ?? Modal Func & State & Pay func
+
+
 
   // ?? Modal Func & State & Pay func
   // const [updateID, setUpdateId] = useState("");
@@ -142,7 +133,6 @@ const DashboardTable = ({ data, columns, refetch }) => {
   const closeModal = () => {
     setIsModalOpen(false);
     setIsUpdateModalOpen(false);
-    setIsDetailsModalOpen(false);
   };
 
   const onConfirmModal = () => {
@@ -229,7 +219,7 @@ const DashboardTable = ({ data, columns, refetch }) => {
                   </td>
                 )}
                 {location.pathname === "/dashboard/employee-list" && (
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-600 flex items-center justify-center">
                     <button
                       title="pay"
                       onClick={() => onPayClick(row._id)}
@@ -244,12 +234,10 @@ const DashboardTable = ({ data, columns, refetch }) => {
                     >
                       <FaShield />
                     </button>
-                    <button
-                      title="view"
-                      onClick={() => onDetailsClick(row._id)}
-                      className="ml-4 text-orange-400 hover:text-orange-700"
-                    >
-                      <FaEye />
+                    <button className="ml-4 text-orange-400 hover:text-orange-700">
+                      <Link title="view" to={`/dashboard/details/${row._id}`}>
+                        <FaEye />
+                      </Link>
                     </button>
                   </td>
                 )}
@@ -275,13 +263,6 @@ const DashboardTable = ({ data, columns, refetch }) => {
               closeModal={closeModal}
               refetch={refetch}
             />
-          )}
-        </>
-      )}
-      {location.pathname === "/dashboard/employee-list" && (
-        <>
-          {isDetailsModalOpen && (
-            <UserDetailsModal userId={detailsId} closeModal={closeModal} />
           )}
         </>
       )}
