@@ -7,6 +7,7 @@ import {
   YAxis,
 } from "recharts";
 import { Tooltip } from "react-tooltip";
+import ProgressInsights from "../../components/dashboard/ProgressInsights";
 
 const DashboardStats = () => {
   // Fake data for charts
@@ -29,41 +30,44 @@ const DashboardStats = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row">
-      <div className="w-full">
-        <h4 className="text-lg font-bold text-gray-800 mb-4">
-          Earnings by Month
-        </h4>
-        <div className="w-full h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={earningsData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="earnings" fill="#8884d8" />
-            </BarChart>
-          </ResponsiveContainer>
+    <>
+      <ProgressInsights />
+      <div className="flex flex-col gap-6 lg:flex-row">
+        <div className="w-full">
+          <h4 className="text-lg font-bold text-gray-800 mb-4">
+            Earnings by Month
+          </h4>
+          <div className="w-full h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={earningsData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="earnings" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </div>
 
-      <div className="w-full">
-        <h4 className="text-lg font-bold text-gray-800 mb-4">
-          Orders Completed by Month
-        </h4>
-        <div className="w-full h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart layout="vertical" data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis type="category" dataKey="name" />
-              <Tooltip />
-              <Bar dataKey="value" fill="#82ca9d" />
-            </BarChart>
-          </ResponsiveContainer>
+        <div className="w-full">
+          <h4 className="text-lg font-bold text-gray-800 mb-4">
+            Orders Completed by Month
+          </h4>
+          <div className="w-full h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart layout="vertical" data={ordersData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="name" />
+                <Tooltip />
+                <Bar dataKey="value" fill="#82ca9d" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

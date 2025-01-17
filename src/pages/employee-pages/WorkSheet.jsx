@@ -14,7 +14,7 @@ const WorkSheet = () => {
   const { isPending, error, data, refetch } = useQuery({
     queryKey: ["works", uid],
     queryFn: async () => {
-      const res = await API.get(`/works/${uid}`);
+      const res = await API.get(`/works?uid=${uid}`);
       if (res.data) {
         return res.data;
       }

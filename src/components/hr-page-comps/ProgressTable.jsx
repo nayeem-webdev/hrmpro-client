@@ -1,7 +1,13 @@
-import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import NothingToShow from "../shared/NothingToShow";
+import Loading from "../shared/Loading";
+import { API } from "../../api/API";
+import DisplayDate from "../shared/DisplayDate";
+import { useEffect, useState } from "react";
+import ProgressInsights from "../dashboard/ProgressInsights";
+import WorkFilter from "./WorkFilter";
 
 const ProgressTable = () => {
-  // const [sortedData, setSortedData] = useState([...allData]);
   // const [isAscending, setIsAscending] = useState(true);
 
   // Toggle Sorting: Low to High / High to Low
@@ -13,8 +19,58 @@ const ProgressTable = () => {
   //   setIsAscending(!isAscending);
   // };
 
+  const [sortedData, setSortedData] = useState([]);
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["works"],
+    queryFn: async () => {
+      const res = await API.get(`/works`);
+      if (res.data) {
+        return res.data;
+      }
+      throw new Error("Failed to fetch user data");
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setSortedData(data);
+    }
+  }, [data]);
+
+  const totalWorkHours = sortedData.reduce((sum, item) => {
+    return sum + parseFloat(item.workHour);
+  }, 0);
+
+  const totalPaymentSettled = sortedData.filter(
+    (item) => item.paymentStatus !== "unpaid"
+  );
+  const totalPaymentPending = sortedData.filter(
+    (item) => item.paymentStatus !== "paid"
+  );
+
+  if (error) {
+    return <NothingToShow />;
+  }
+  if (isPending) {
+    return (
+      <Loading bg="https://i.ibb.co.com/jb4bG4d/Employee-Grievances-Management.gif" />
+    );
+  }
+
   return (
     <>
+      {/* totalWorkDone,
+  totalWorkHours,
+  totalPaymentSettled,
+  totalPaymentPending, */}
+      <ProgressInsights
+        totalWorkDone={sortedData?.length}
+        totalWorkHours={totalWorkHours}
+        totalPaymentSettled={totalPaymentSettled.length}
+        totalPaymentPending={totalPaymentPending.length}
+      />
+      <WorkFilter />
       {/* Sorting Buttons */}
       {/* <div className="flex justify-end mb-4">
         <button
@@ -29,58 +85,65 @@ const ProgressTable = () => {
       </div> */}
 
       {/* Product Table */}
-      <table className="w-full bg-white rounded-lg shadow-md">
+      <table className="w-full bg-white text-sm rounded-lg shadow-md">
         <thead>
           <tr className="border-b-2 border-gray-200">
             <th className="px-6 py-3 font-bold text-gray-600 uppercase text-center tracking-wider cursor-pointer">
               Sl.
             </th>
             <th className="px-6 py-3 font-bold text-gray-600 uppercase text-center tracking-wider cursor-pointer">
-              Sl.
+              Name
             </th>
             <th className="px-6 py-3 font-bold text-gray-600 uppercase text-center tracking-wider cursor-pointer">
-              Sl.
+              Work Name
             </th>
             <th className="px-6 py-3 font-bold text-gray-600 uppercase text-center tracking-wider cursor-pointer">
-              Sl.
+              Work Type
+            </th>
+
+            <th className="px-6 py-3 font-bold text-gray-600 uppercase text-center tracking-wider cursor-pointer">
+              Work Time(Hr.)
             </th>
             <th className="px-6 py-3 font-bold text-gray-600 uppercase text-center tracking-wider cursor-pointer">
-              Sl.
+              Date
+            </th>
+            <th className="px-6 py-3 font-bold text-gray-600 uppercase text-center tracking-wider cursor-pointer">
+              Payment
             </th>
           </tr>
         </thead>
-        {/* <tbody>
+        <tbody>
           {sortedData.map((item, index) => (
             <tr
               key={item._id}
               className={`border-b border-gray-200 hover:bg-gray-100 ${
-                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                }`}
+                index % 2 === 0 ? "bg-gray-50" : "bg-white"
+              }`}
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{index + 1}</td>
-              <td className="py-2 px-4 text-center">
-                <img
-                  src={item.product_image}
-                  alt={item.product_title}
-                  className="w-14 h-14 mx-auto object-scale-down bg-white p-1"
-                />
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                {index + 1}
               </td>
-              <td className="py-2 px-4">{item.product_title}</td>
+              <td className="py-2 px-4 ">{item.name}</td>
+              <td className="py-2 px-4">{item.workDetails}</td>
+              <td className="py-2 px-4 text-center">{item.work}</td>
+              <td className="py-2 px-4 text-center">{item.workHour}</td>
               <td className="py-2 px-4 text-center">
-                {item.category.replace("-", " ").toUpperCase()}
+                <DisplayDate date={item.date} />
               </td>
-              <td className="py-2 px-4 text-center">$ {item.price}</td>
-              <td className="py-2 px-4 text-center">
-                <Link
-                  to={`/shop/product/${item._id}`}
-                  className="mt-3 w-full bg-black text-white  py-2 px-4 rounded-md hover:bg-black/70  transition flex justify-center items-center gap-2 font-bold"
-                >
-                  View
-                </Link>
+              <td className="py-2 px-4 text-center flex justify-center">
+                {item.paymentStatus === "paid" ? (
+                  <p className="bg-green-50 text-green-500 py-1 px-3 rounded-full">
+                    Paid
+                  </p>
+                ) : (
+                  <p className="bg-red-50 text-red-500 py-1 px-3 rounded-full">
+                    Unpaid
+                  </p>
+                )}
               </td>
             </tr>
           ))}
-        </tbody> */}
+        </tbody>
       </table>
     </>
   );

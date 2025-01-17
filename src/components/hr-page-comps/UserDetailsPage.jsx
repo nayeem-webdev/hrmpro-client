@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { API } from "../../api/API";
 import { toast } from "react-toastify";
@@ -28,7 +27,7 @@ const UserDetailsPage = () => {
       try {
         const [userResponse, earningsResponse, paidResponse] =
           await Promise.all([
-            API.get(`/user/id/${userId?.id}`),
+            API.get(`/user?id=${userId?.id}`),
             API.get(`/stats/earnings/${user?.uid}`),
             API.get(`/stats/paid/${user?.uid}`),
           ]);

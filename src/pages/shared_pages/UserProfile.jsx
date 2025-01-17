@@ -29,7 +29,7 @@ const UserProfile = () => {
   } = useQuery({
     queryKey: ["userData", user?.uid],
     queryFn: async () => {
-      const res = await API.get(`/user/${user?.uid}`);
+      const res = await API.get(`/user?uid=${user?.uid}`);
       if (res.data) {
         return res.data;
       }
