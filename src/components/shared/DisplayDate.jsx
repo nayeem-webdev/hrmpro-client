@@ -8,7 +8,7 @@ const DisplayDate = ({ date }) => {
 };
 
 DisplayDate.propTypes = {
-  date: PropTypes.string.isRequired,
+  date: PropTypes.string,
 };
 
 export default DisplayDate;

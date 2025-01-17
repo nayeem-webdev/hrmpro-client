@@ -11,6 +11,8 @@ import PrivateRoutes from "./PrivateRoutes";
 import SignUpPage from "../pages/public-pages/SignUpPage.jsx";
 import WorkSheet from "../pages/employee-pages/WorkSheet.jsx";
 import PaymentHistory from "../pages/employee-pages/PaymentHistory.jsx";
+import HRRoutes from "./HRRoutes.jsx";
+import EmployeeList from "../pages/hr-pages/EmployeeList.jsx";
 
 const routes = createBrowserRouter([
   {
@@ -71,6 +73,14 @@ const routes = createBrowserRouter([
           <PrivateRoutes>
             <PaymentHistory />,
           </PrivateRoutes>
+        ),
+      },
+      {
+        path: "employee-list",
+        element: (
+          <HRRoutes>
+            <EmployeeList />,
+          </HRRoutes>
         ),
       },
     ],

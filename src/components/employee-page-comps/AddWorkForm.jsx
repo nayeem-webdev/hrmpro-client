@@ -93,6 +93,9 @@ const AddWorkForm = ({ refetch }) => {
           <option value="sales">Sales</option>
           <option value="support">Support</option>
           <option value="content">Content</option>
+          <option value="content">Administration</option>
+          <option value="content">Copy Writing</option>
+          <option value="content">Administration</option>
         </select>
       </div>
       <div>

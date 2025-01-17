@@ -114,7 +114,7 @@ const DashboardTable = ({ data, columns, refetch }) => {
 
   return (
     <>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto shadow rounded-lg">
         <table className="w-full bg-white rounded-lg shadow-md">
           <thead>
             <tr className="border-b-2 border-gray-200">
@@ -153,14 +153,18 @@ const DashboardTable = ({ data, columns, refetch }) => {
                   <td
                     key={column.accessor}
                     className={`px-6 py-4 whitespace-nowrap text-sm text-gray-600 ${
-                      column.accessor !== "workDetails" && "text-center"
+                      column.accessor !== "workDetails" &&
+                      column.accessor !== "displayName"
+                        ? "text-center"
+                        : ""
                     } `}
                   >
                     {column.accessor === "isVerified" ? (
                       renderVerifiedBadge(row[column.accessor])
                     ) : column.accessor === "paymentStatus" ? (
                       renderPaymentBadge(row[column.accessor])
-                    ) : column.accessor === "date" ? (
+                    ) : column.accessor === "date" &&
+                      location.pathname === "/dashboard/work-sheet" ? (
                       <DisplayDate date={row[column.accessor]} />
                     ) : (
                       row[column.accessor]
@@ -171,7 +175,7 @@ const DashboardTable = ({ data, columns, refetch }) => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                     <button
                       onClick={() => onUpdateClick(row._id)}
-                      className="text-blue-500 hover:text-blue-700"
+                      className="text-blue-400 hover:text-blue-700"
                     >
                       Edit
                     </button>
@@ -183,6 +187,22 @@ const DashboardTable = ({ data, columns, refetch }) => {
                     </button>
                   </td>
                 )}
+                {location.pathname === "/dashboard/employee-list" && (
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    <button
+                      onClick={() => onUpdateClick(row._id)}
+                      className="text-green-500 hover:text-green-700"
+                    >
+                      Pay
+                    </button>
+                    <button
+                      onClick={() => onDeleteClick(row._id)}
+                      className="ml-4 text-blue-400 hover:text-blue-700"
+                    >
+                      Details
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -190,7 +210,6 @@ const DashboardTable = ({ data, columns, refetch }) => {
       </div>
       {location.pathname === "/dashboard/work-sheet" && (
         <>
-          {" "}
           {isModalOpen && (
             <Modal
               headText="Delete! Are you sure?"
