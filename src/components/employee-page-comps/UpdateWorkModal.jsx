@@ -11,7 +11,7 @@ const UpdateWorkModal = ({ workId, closeModal, refetch }) => {
   const [hourRate, setHourRate] = useState(0);
 
   useEffect(() => {
-    API.get(`work/${workId}`)
+    API.get(`/work/${workId}`)
       .then((res) => {
         const data = res.data;
         setWorkDetails(data?.workDetails || "");

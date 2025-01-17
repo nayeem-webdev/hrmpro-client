@@ -46,7 +46,7 @@ const LoginPage = () => {
           displayName: user.displayName,
           photoURL: "https://i.ibb.co.com/nRm6fz9/Png-Item-5067022.png",
           uid: user.uid,
-          userRole: "",
+          userRole: "employee",
           isVerified: false,
           isFired: false,
           details: {

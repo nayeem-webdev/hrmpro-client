@@ -11,48 +11,47 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Line,
+  ComposedChart,
 } from "recharts";
+import { useParams } from "react-router-dom";
 
-const UserDetailsPage = ({ userId = "6787f30e3fd281a4c48917ab" }) => {
+const UserDetailsPage = () => {
+  const userId = useParams();
+  console.log(userId);
   const [user, setUser] = useState({});
+  const [earningsData, setEarningsData] = useState([]);
+  const [paymentData, setPaymentData] = useState([]);
+
   useEffect(() => {
-    API.get(`user/id/${userId}`)
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch((err) => {
+    const fetchAllData = async () => {
+      try {
+        const [userResponse, earningsResponse, paidResponse] =
+          await Promise.all([
+            API.get(`/user/id/${userId?.id}`),
+            API.get(`/stats/earnings/${user?.uid}`),
+            API.get(`/stats/paid/${user?.uid}`),
+          ]);
+        setUser(userResponse.data);
+        setEarningsData(earningsResponse.data);
+        setPaymentData(paidResponse.data);
+      } catch (err) {
         console.error(err.message);
         toast.error("Failed to fetch user data");
-      });
-  }, [userId]);
+      }
+    };
+    fetchAllData();
+  }, [user?.uid, userId.id]);
 
-  // Fake data for charts
-  const earningsData = [
-    { month: "January", earnings: 4000 },
-    { month: "February", earnings: 3500 },
-    { month: "March", earnings: 5000 },
-    { month: "April", earnings: 4700 },
-    { month: "May", earnings: 5300 },
-    { month: "June", earnings: 4800 },
-  ];
-
-  const ordersData = [
-    { month: "January", orders: 50 },
-    { month: "February", orders: 40 },
-    { month: "March", orders: 60 },
-    { month: "April", orders: 70 },
-    { month: "May", orders: 75 },
-    { month: "June", orders: 65 },
-  ];
-
+  console.log(user.uid);
   return (
-    <div className="p-4 md:p-6 lg:p-8">
+    <>
       <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-6 tracking-wide">
         User Details
       </h1>
 
       {/* User Profile */}
-      <div className="flex flex-col md:flex-row gap-4 items-center mb-6">
+      <div className="flex flex-col md:flex-row gap-4 items-center mb-6 ">
         <div className="flex justify-center md:border-r-2 md:pr-4">
           <img
             src={user?.photoURL}
@@ -111,45 +110,46 @@ const UserDetailsPage = ({ userId = "6787f30e3fd281a4c48917ab" }) => {
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="w-full">
           <h4 className="text-lg font-bold text-gray-800 mb-4">
-            Earnings by Month
+            Earnings by Date
           </h4>
           <div className="w-full h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={earningsData}>
+              <ComposedChart data={earningsData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
+                <XAxis dataKey="_id" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="earnings" fill="#8884d8" />
-              </BarChart>
+                <Bar dataKey="totalPayments" fill="#1e90ff" />
+                <Line
+                  dataKey="totalWorkHours"
+                  stroke="#21409a"
+                  strokeWidth={3}
+                />
+              </ComposedChart>
             </ResponsiveContainer>
           </div>
         </div>
-
         <div className="w-full">
           <h4 className="text-lg font-bold text-gray-800 mb-4">
-            Orders Completed by Month
+            Payment Status
           </h4>
           <div className="w-full h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={ordersData}>
+              <BarChart layout="vertical" data={paymentData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
+                <XAxis type="number" />
+                <YAxis hide type="category" dataKey="name" />
                 <Tooltip />
-                <Bar dataKey="orders" fill="#82ca9d" />
+                <Bar dataKey="paymentReceived" fill="#5cb85c" />
+                <Bar dataKey="paymentPending" fill="#f7cb73" />
+                <Bar dataKey="waitingForPayment" fill="#D9512C" />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
-};
-
-UserDetailsPage.propTypes = {
-  userId: PropTypes.string.isRequired,
-  navigateBack: PropTypes.func.isRequired,
 };
 
 export default UserDetailsPage;

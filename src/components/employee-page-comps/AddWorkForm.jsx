@@ -38,7 +38,7 @@ const AddWorkForm = ({ refetch }) => {
       paymentStatus: "unpaid",
       paymentApprovedStatus: "not_approved",
     };
-    API.post("/works", newWork)
+    API.post("/work", newWork)
       .then((res) => {
         console.log(res.data);
         toast.success("Work Added Successfully");

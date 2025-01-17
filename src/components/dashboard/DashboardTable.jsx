@@ -89,8 +89,6 @@ const DashboardTable = ({ data, columns, refetch }) => {
   };
   // ?? Modal Func & State & Pay func
 
-
-
   // ?? Modal Func & State & Pay func
   // const [updateID, setUpdateId] = useState("");
   // const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -121,7 +119,7 @@ const DashboardTable = ({ data, columns, refetch }) => {
 
   const handleDeleteWork = async (id) => {
     try {
-      await API.delete(`/works/${id}`).then((res) => console.log(res.data));
+      await API.delete(`/work/${id}`).then((res) => console.log(res.data));
       refetch();
       toast.success("Delete work successful!");
     } catch (error) {

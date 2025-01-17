@@ -1,12 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import { useState } from "react";
 import DashboardNavbar from "../components/dashboard/DashboardNavbar";
 import DashboardSideNav from "../components/dashboard/DashboardSideNav";
 import { ToastContainer } from "react-toastify";
+import DashboardStats from "../pages/shared_pages/DashboardStats";
 
 const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);
@@ -21,7 +23,11 @@ const DashboardLayout = () => {
         {/* Outlet */}
         <div className="h-[calc(100vh-64px)] overflow-auto p-4 w-full ">
           <div className="">
-            <Outlet />
+            {location.pathname === "/dashboard" ? (
+              <DashboardStats />
+            ) : (
+              <Outlet />
+            )}
           </div>
         </div>
       </div>
