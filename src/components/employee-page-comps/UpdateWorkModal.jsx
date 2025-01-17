@@ -10,7 +10,6 @@ const UpdateWorkModal = ({ workId, closeModal, refetch }) => {
   const [hoursWorked, setHoursWorked] = useState("");
   const [hourRate, setHourRate] = useState(0);
 
-  // Fetch initial data on mount
   useEffect(() => {
     API.get(`work/${workId}`)
       .then((res) => {
@@ -27,7 +26,7 @@ const UpdateWorkModal = ({ workId, closeModal, refetch }) => {
         toast.error("Failed to fetch work data");
         closeModal();
       });
-  }, [workId, closeModal]); // Only `workId` and `closeModal` in dependency array
+  }, [workId, closeModal]);
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;

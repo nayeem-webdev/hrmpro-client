@@ -6,6 +6,9 @@ import { API } from "../../api/API";
 import { toast } from "react-toastify";
 import Modal from "./Modal";
 import UpdateWorkModal from "../employee-page-comps/UpdateWorkModal";
+import { FaMoneyCheckDollar, FaShield } from "react-icons/fa6";
+import { FaEye } from "react-icons/fa";
+import UserDetailsModal from "../hr-page-comps/UserDetailsModal";
 
 const DashboardTable = ({ data, columns, refetch }) => {
   const location = useLocation();
@@ -72,6 +75,41 @@ const DashboardTable = ({ data, columns, refetch }) => {
     );
   };
 
+  // ?? Modal Func & State & Details func
+  const [detailsId, setDetailsId] = useState("");
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const onDetailsClick = (id) => {
+    setDetailsId(id);
+    setIsDetailsModalOpen(true);
+    console.log(id, detailsId, isDetailsModalOpen);
+  };
+  // ?? Modal Func & State & Details func
+
+  // ?? Modal Func & State & Pay func
+  const onVerifyClick = (id) => {
+    API.put(`/users/verify/${id}`)
+      .then(() => {
+        toast.success("User Status Changed Successfully");
+        refetch();
+        closeModal();
+      })
+      .catch((err) => {
+        console.error(err.message);
+        toast.error("Failed to Change User Status");
+      });
+  };
+  // ?? Modal Func & State & Pay func
+
+  // ?? Modal Func & State & Pay func
+  // const [updateID, setUpdateId] = useState("");
+  // const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const onPayClick = (id) => {
+    console.log(id);
+    // setUpdateId(id);
+    // setIsUpdateModalOpen(true);
+  };
+  // ?? Modal Func & State & Pay func
+
   // ?? Modal Func & State & delete func
   const [updateID, setUpdateId] = useState("");
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -104,6 +142,7 @@ const DashboardTable = ({ data, columns, refetch }) => {
   const closeModal = () => {
     setIsModalOpen(false);
     setIsUpdateModalOpen(false);
+    setIsDetailsModalOpen(false);
   };
 
   const onConfirmModal = () => {
@@ -166,6 +205,8 @@ const DashboardTable = ({ data, columns, refetch }) => {
                     ) : column.accessor === "date" &&
                       location.pathname === "/dashboard/work-sheet" ? (
                       <DisplayDate date={row[column.accessor]} />
+                    ) : typeof column.accessor === "function" ? (
+                      column.accessor(row)
                     ) : (
                       row[column.accessor]
                     )}
@@ -188,18 +229,27 @@ const DashboardTable = ({ data, columns, refetch }) => {
                   </td>
                 )}
                 {location.pathname === "/dashboard/employee-list" && (
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                     <button
-                      onClick={() => onUpdateClick(row._id)}
+                      title="pay"
+                      onClick={() => onPayClick(row._id)}
                       className="text-green-500 hover:text-green-700"
                     >
-                      Pay
+                      <FaMoneyCheckDollar />
                     </button>
                     <button
-                      onClick={() => onDeleteClick(row._id)}
+                      title="verify"
+                      onClick={() => onVerifyClick(row._id)}
                       className="ml-4 text-blue-400 hover:text-blue-700"
                     >
-                      Details
+                      <FaShield />
+                    </button>
+                    <button
+                      title="view"
+                      onClick={() => onDetailsClick(row._id)}
+                      className="ml-4 text-orange-400 hover:text-orange-700"
+                    >
+                      <FaEye />
                     </button>
                   </td>
                 )}
@@ -225,6 +275,13 @@ const DashboardTable = ({ data, columns, refetch }) => {
               closeModal={closeModal}
               refetch={refetch}
             />
+          )}
+        </>
+      )}
+      {location.pathname === "/dashboard/employee-list" && (
+        <>
+          {isDetailsModalOpen && (
+            <UserDetailsModal userId={detailsId} closeModal={closeModal} />
           )}
         </>
       )}

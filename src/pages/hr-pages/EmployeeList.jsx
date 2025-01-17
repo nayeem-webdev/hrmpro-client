@@ -19,11 +19,16 @@ const EmployeeList = () => {
   const columns = [
     { Header: "Name", accessor: "displayName" },
     { Header: "Email", accessor: "email" },
-    { Header: "Account No", accessor: "details.bankAccount" },
-    { Header: "Salary", accessor: "details.salary" },
+    {
+      Header: "Salary",
+      accessor: (row) => row.details?.salary || "N/A",
+    },
+    {
+      Header: "Account No",
+      accessor: (row) => row.details?.bankAccount || "N/A",
+    },
     { Header: "Status", accessor: "isVerified" },
   ];
-  console.log(data);
 
   if (error) {
     return <NothingToShow />;
