@@ -2,6 +2,10 @@ import { NavLink } from "react-router-dom";
 import { IoCashOutline } from "react-icons/io5";
 import { PiUserList } from "react-icons/pi";
 
+import PropTypes from "prop-types";
+import { useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 import {
   AiFillDashboard,
   AiOutlineBarChart,
@@ -9,16 +13,51 @@ import {
   AiOutlineUnorderedList,
   AiOutlineUser,
 } from "react-icons/ai";
-import PropTypes from "prop-types";
+import Loading from "../shared/Loading";
+import AuthContext from "../../context/AuthContext";
+import { API } from "../../api/API";
 
 const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
-  const employee = true;
-  const HRExecutive = true;
-  const admin = true;
+  const { user } = useContext(AuthContext);
+  const { uid } = user;
+
+  const { isPending, data, error } = useQuery({
+    queryKey: ["userRole", uid],
+    queryFn: async () => {
+      const res = await API.get(`/user/role?uid=${uid}`);
+      if (res.data) {
+        return res.data;
+      }
+      throw new Error("Failed to fetch user data");
+    },
+    enabled: !!uid, // Ensure the query only runs if uid exists
+  });
+
+  if (isPending) {
+    return (
+      <Loading bg="https://i.ibb.co.com/SrX98Xj/Employee-Management.gif" />
+    );
+  }
+
+  // Handle errors explicitly
+  if (error) {
+    return (
+      <div className="error">
+        <p>Something went wrong: {error.message}</p>
+      </div>
+    );
+  }
+
+  // Safely destructure the data after ensuring it is defined
+  const userRole = data?.userRole || "";
+  const employee = userRole === "employee";
+  const HRExecutive = userRole === "hr_executive";
+  const admin = userRole === "admin";
+
   return (
     <>
       <nav
-        className={`fixed z-50 bg-gray-200 text-black  h-[calc(100vh-64px)] flex-shrink-0 transform transition-transform duration-500 ${
+        className={`fixed z-50 bg-gray-200 text-black h-[calc(100vh-64px)] flex-shrink-0 transform transition-transform duration-500 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 lg:relative lg:flex`}
       >
@@ -132,7 +171,6 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
         </div>
       </nav>
 
-      {/* Overlay for Mobile */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/20 z-5 lg:hidden"
