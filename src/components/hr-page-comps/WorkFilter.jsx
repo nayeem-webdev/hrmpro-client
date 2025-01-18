@@ -42,7 +42,7 @@ const WorkFilter = () => {
   };
 
   return (
-    <div className="p-4 mb-4 shadow-lg rounded-lg">
+    <div className="p-4 mb-4 shadow bg-white rounded-lg">
       <div className="max-w-screen-lg mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Employee Select */}
         <div className="flex flex-col">

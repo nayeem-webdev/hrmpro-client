@@ -142,7 +142,7 @@ const DashboardTable = ({ data, columns, refetch }) => {
   return (
     <>
       <div className="overflow-x-auto shadow rounded-lg">
-        <table className="w-full bg-white rounded-lg shadow-md">
+        <table className="w-full bg-white rounded-lg">
           <thead>
             <tr className="border-b-2 border-gray-200">
               {columns.map((column) => (
