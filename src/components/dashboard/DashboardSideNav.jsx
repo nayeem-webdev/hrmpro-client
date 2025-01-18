@@ -146,6 +146,17 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
                   Employee List
                 </NavLink>
                 <NavLink
+                  to="/dashboard/hr-list"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                      isActive ? "bg-primary text-white" : ""
+                    }`
+                  }
+                >
+                  <PiUserList />
+                  HR List
+                </NavLink>
+                <NavLink
                   to="/dashboard/payroll"
                   className={({ isActive }) =>
                     `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${

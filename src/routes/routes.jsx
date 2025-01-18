@@ -19,6 +19,7 @@ import EmployeeRoutes from "./EmployeeRoutes.jsx";
 import AdminRoutes from "./AdminRoutes.jsx";
 import Payroll from "../pages/admin_pages/Payroll.jsx";
 import Mail from "../pages/admin_pages/Mail.jsx";
+import AllEmployeeList from "../pages/admin_pages/AllEmployeeList.jsx";
 
 const routes = createBrowserRouter([
   {
@@ -112,6 +113,16 @@ const routes = createBrowserRouter([
             <HRRoutes>
               <Progress />,
             </HRRoutes>
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "all-employee-list",
+        element: (
+          <PrivateRoutes>
+            <AdminRoutes>
+              <AllEmployeeList />,
+            </AdminRoutes>
           </PrivateRoutes>
         ),
       },
