@@ -56,7 +56,7 @@ const AddWorkForm = ({ refetch }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-white p-4 rounded-lg shadow"
+      className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-4 gap-4 bg-white p-4 rounded-lg shadow"
     >
       <div className="relative w-full">
         <label

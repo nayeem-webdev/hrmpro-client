@@ -76,7 +76,7 @@ const DashboardTable = ({ data, columns, refetch }) => {
 
   // ?? Modal Func & State & Pay func
   const onVerifyClick = (id) => {
-    API.put(`/users/verify/${id}`)
+    API.put(`/user/verify/${id}`)
       .then(() => {
         toast.success("User Status Changed Successfully");
         refetch();

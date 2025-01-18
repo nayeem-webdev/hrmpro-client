@@ -18,7 +18,7 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
   return (
     <>
       <nav
-        className={`fixed z-50 bg-black/5 text-black  h-[calc(100vh-64px)] flex-shrink-0 transform transition-transform duration-500 ${
+        className={`fixed z-50 bg-gray-200 text-black  h-[calc(100vh-64px)] flex-shrink-0 transform transition-transform duration-500 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 lg:relative lg:flex`}
       >

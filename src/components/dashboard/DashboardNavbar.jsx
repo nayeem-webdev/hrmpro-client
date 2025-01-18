@@ -9,7 +9,7 @@ const DashboardNavbar = ({ toggleSidebar, isOpen }) => {
   console.log(user);
 
   return (
-    <nav className=" bg-black/5 fixed flex justify-between top-0 w-full transition duration-300 px-4 lg:px-8 py-3 items-center shadow-md  z-50 ">
+    <nav className=" bg-gray-200 fixed flex justify-between top-0 w-full transition duration-300 px-4 lg:px-8 py-3 items-center shadow-md  z-50 ">
       <div className="flex items-center gap-3 text-black lg:w-1/3">
         <button
           className="lg:hidden text-black text-2xl"

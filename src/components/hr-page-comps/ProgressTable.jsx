@@ -1,54 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import NothingToShow from "../shared/NothingToShow";
 import Loading from "../shared/Loading";
-import { API } from "../../api/API";
 import DisplayDate from "../shared/DisplayDate";
-import { useEffect, useState } from "react";
-import ProgressInsights from "../dashboard/ProgressInsights";
-import WorkFilter from "./WorkFilter";
 
-const ProgressTable = () => {
-  // const [isAscending, setIsAscending] = useState(true);
+import PropTypes from "prop-types";
 
-  // Toggle Sorting: Low to High / High to Low
-  // const toggleSorting = () => {
-  //   const sorted = [...allData].sort((a, b) =>
-  //     isAscending ? a.price - b.price : b.price - a.price
-  //   );
-  //   setSortedData(sorted);
-  //   setIsAscending(!isAscending);
-  // };
-
-  const [sortedData, setSortedData] = useState([]);
-
-  const { isPending, error, data } = useQuery({
-    queryKey: ["works"],
-    queryFn: async () => {
-      const res = await API.get(`/works`);
-      if (res.data) {
-        return res.data;
-      }
-      throw new Error("Failed to fetch user data");
-    },
-  });
-
-  useEffect(() => {
-    if (data) {
-      setSortedData(data);
-    }
-  }, [data]);
-
-  const totalWorkHours = sortedData.reduce((sum, item) => {
-    return sum + parseFloat(item.workHour);
-  }, 0);
-
-  const totalPaymentSettled = sortedData.filter(
-    (item) => item.paymentStatus !== "unpaid"
-  );
-  const totalPaymentPending = sortedData.filter(
-    (item) => item.paymentStatus !== "paid"
-  );
-
+const ProgressTable = ({ isPending, error, data }) => {
   if (error) {
     return <NothingToShow />;
   }
@@ -60,31 +16,6 @@ const ProgressTable = () => {
 
   return (
     <>
-      {/* totalWorkDone,
-  totalWorkHours,
-  totalPaymentSettled,
-  totalPaymentPending, */}
-      <ProgressInsights
-        totalWorkDone={sortedData?.length}
-        totalWorkHours={totalWorkHours}
-        totalPaymentSettled={totalPaymentSettled.length}
-        totalPaymentPending={totalPaymentPending.length}
-      />
-      <WorkFilter />
-      {/* Sorting Buttons */}
-      {/* <div className="flex justify-end mb-4">
-        <button
-          // onClick={toggleSorting}
-          aria-label={`Sort by price ${
-            isAscending ? "Low to High" : "High to Low"
-          }`}
-          className=" py-2 px-4 bg-black dark:bg-white text-white dark:text-black rounded-md hover:bg-black/70 dark:hover:bg-white/70 transition flex justify-center items-center gap-2 font-bold"
-        >
-          Sort by Price: {isAscending ? "Low to High" : "High to Low"}
-        </button>
-      </div> */}
-
-      {/* Product Table */}
       <div className="overflow-x-auto shadow rounded-lg">
         <table className="w-full bg-white rounded-lg">
           <thead>
@@ -114,7 +45,7 @@ const ProgressTable = () => {
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((item, index) => (
+            {data.map((item, index) => (
               <tr
                 key={item._id}
                 className={`border-b border-gray-200 hover:bg-gray-100 ${
@@ -151,4 +82,9 @@ const ProgressTable = () => {
   );
 };
 
+ProgressTable.propTypes = {
+  isPending: PropTypes.bool,
+  error: PropTypes.bool,
+  data: PropTypes.array.isRequired,
+};
 export default ProgressTable;

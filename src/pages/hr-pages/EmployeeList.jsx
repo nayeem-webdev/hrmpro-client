@@ -45,7 +45,6 @@ const EmployeeList = () => {
         Employee List
       </h1>
 
-      <div className="mb-5" />
       <DashboardTable columns={columns} data={data} refetch={refetch} />
     </>
   );

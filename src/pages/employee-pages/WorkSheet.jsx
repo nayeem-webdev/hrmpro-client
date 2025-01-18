@@ -47,7 +47,6 @@ const WorkSheet = () => {
       </h1>
 
       <AddWorkForm refetch={refetch} />
-      <div className="mb-5" />
       <DashboardTable columns={columns} data={data} refetch={refetch} />
     </>
   );
