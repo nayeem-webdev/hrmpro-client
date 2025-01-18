@@ -15,6 +15,10 @@ import HRRoutes from "./HRRoutes.jsx";
 import EmployeeList from "../pages/hr-pages/EmployeeList.jsx";
 import UserDetailsPage from "../components/hr-page-comps/UserDetailsPage.jsx";
 import Progress from "../pages/hr-pages/Progress.jsx";
+import EmployeeRoutes from "./EmployeeRoutes.jsx";
+import AdminRoutes from "./AdminRoutes.jsx";
+import Payroll from "../pages/admin_pages/Payroll.jsx";
+import Mail from "../pages/admin_pages/Mail.jsx";
 
 const routes = createBrowserRouter([
   {
@@ -65,7 +69,9 @@ const routes = createBrowserRouter([
         path: "work-sheet",
         element: (
           <PrivateRoutes>
-            <WorkSheet />,
+            <EmployeeRoutes>
+              <WorkSheet />,
+            </EmployeeRoutes>
           </PrivateRoutes>
         ),
       },
@@ -73,32 +79,60 @@ const routes = createBrowserRouter([
         path: "payment-history",
         element: (
           <PrivateRoutes>
-            <PaymentHistory />,
+            <EmployeeRoutes>
+              <PaymentHistory />,
+            </EmployeeRoutes>
           </PrivateRoutes>
         ),
       },
       {
         path: "employee-list",
         element: (
-          <HRRoutes>
-            <EmployeeList />,
-          </HRRoutes>
+          <PrivateRoutes>
+            <HRRoutes>
+              <EmployeeList />,
+            </HRRoutes>
+          </PrivateRoutes>
         ),
       },
       {
         path: "details/:id",
         element: (
-          <HRRoutes>
-            <UserDetailsPage />,
-          </HRRoutes>
+          <PrivateRoutes>
+            <HRRoutes>
+              <UserDetailsPage />,
+            </HRRoutes>
+          </PrivateRoutes>
         ),
       },
       {
         path: "progress",
         element: (
-          <HRRoutes>
-            <Progress />,
-          </HRRoutes>
+          <PrivateRoutes>
+            <HRRoutes>
+              <Progress />,
+            </HRRoutes>
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "payroll",
+        element: (
+          <PrivateRoutes>
+            <AdminRoutes>
+              <Payroll />,
+            </AdminRoutes>
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "mails",
+        element: (
+          <PrivateRoutes>
+            <AdminRoutes>
+              <Mail />,
+            </AdminRoutes>
+          </PrivateRoutes>
         ),
       },
     ],

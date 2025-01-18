@@ -149,6 +149,9 @@ const UserProfile = () => {
                     className="p-2 border rounded-tl-md rounded-bl-md w-full text-gray-700"
                     onChange={(e) => setRole(e.target.value)}
                   >
+                    <option value="">
+                      Select Role
+                    </option>
                     <option value="employee">Employee</option>
                     <option value="hr_executive">HR Executive</option>
                   </select>
@@ -188,7 +191,9 @@ const UserProfile = () => {
                     className="p-2 border rounded-tl-md rounded-bl-md w-full text-gray-700"
                     onChange={(e) => setDesignation(e.target.value)}
                   >
-                    <option value="">Select Designation</option>
+                    <option value="" disabled>
+                      Select Designation
+                    </option>
                     <option value="Sales Assistant">Sales Assistant</option>
                     <option value="Social Media Executive">
                       Social Media Executive
