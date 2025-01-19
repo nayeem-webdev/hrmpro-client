@@ -147,12 +147,12 @@ const Navbar = () => {
               Login
             </Link>
           ) : (
-            <Link
+            <button
               onClick={handleLogout}
               className="bg-primary text-white px-4 py-2 rounded hover:bg-accent transition"
             >
               Logout
-            </Link>
+            </button>
           )}
         </div>
       </div>

@@ -13,7 +13,6 @@ import {
   AiOutlineUnorderedList,
   AiOutlineUser,
 } from "react-icons/ai";
-import Loading from "../shared/Loading";
 import AuthContext from "../../context/AuthContext";
 import { API } from "../../api/API";
 
@@ -30,12 +29,12 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
       }
       throw new Error("Failed to fetch user data");
     },
-    enabled: !!uid, // Ensure the query only runs if uid exists
+    enabled: !!uid, 
   });
 
   if (isLoading) {
     return (
-      <Loading bg="https://i.ibb.co.com/SrX98Xj/Employee-Management.gif" />
+    <p>Loading ...</p>
     );
   }
 

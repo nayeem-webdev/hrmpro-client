@@ -8,6 +8,7 @@ import Modal from "./Modal";
 import UpdateWorkModal from "../employee-page-comps/UpdateWorkModal";
 import { FaMoneyCheckDollar, FaShield } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa";
+import PaymentModal from "../hr-page-comps/PaymentModal";
 
 const DashboardTable = ({ data, columns, refetch }) => {
   const location = useLocation();
@@ -74,7 +75,7 @@ const DashboardTable = ({ data, columns, refetch }) => {
     );
   };
 
-  // ?? Modal Func & State & Pay func
+  // ?? Verify Func
   const onVerifyClick = (id) => {
     API.put(`/user/verify/${id}`)
       .then(() => {
@@ -87,28 +88,28 @@ const DashboardTable = ({ data, columns, refetch }) => {
         toast.error("Failed to Change User Status");
       });
   };
-  // ?? Modal Func & State & Pay func
+  // ?? Verify Func
 
-  // ?? Modal Func & State & Pay func
-  // const [updateID, setUpdateId] = useState("");
-  // const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  // !! Modal Func & State & Pay
+  const [payId, setPayId] = useState("");
+  const [isPayModalOpen, setIsPayModalOpen] = useState(false);
   const onPayClick = (id) => {
     console.log(id);
-    // setUpdateId(id);
-    // setIsUpdateModalOpen(true);
+    setPayId(id);
+    setIsPayModalOpen(true);
   };
-  // ?? Modal Func & State & Pay func
+  // !! Modal Func & State & Pay
 
-  // ?? Modal Func & State & delete func
+  // ?? Modal Func & State & Update
   const [updateID, setUpdateId] = useState("");
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const onUpdateClick = (id) => {
     setUpdateId(id);
     setIsUpdateModalOpen(true);
   };
-  // ?? Modal Func & State & delete func
+  // ?? Modal Func & State & Update
 
-  // ?? Modal Func & State & delete func
+  // ?? Modal Func & State & delete
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteID, setDeleteId] = useState("");
 
@@ -131,13 +132,14 @@ const DashboardTable = ({ data, columns, refetch }) => {
   const closeModal = () => {
     setIsModalOpen(false);
     setIsUpdateModalOpen(false);
+    setIsPayModalOpen(false);
   };
 
   const onConfirmModal = () => {
     handleDeleteWork(deleteID);
     setIsModalOpen(false);
   };
-  // ?? Modal Func & State & delete func
+  // ?? Modal Func & State & delete
 
   return (
     <>
@@ -220,8 +222,13 @@ const DashboardTable = ({ data, columns, refetch }) => {
                   <td className="px-6 py-4 whitespace-nowrap text-gray-600 flex items-center justify-center">
                     <button
                       title="pay"
-                      onClick={() => onPayClick(row._id)}
-                      className="text-green-500 hover:text-green-700"
+                      disabled={!row.isVerified}
+                      onClick={() => onPayClick(row.uid)}
+                      className={` ${
+                        row?.isVerified
+                          ? "text-green-500 hover:text-green-700"
+                          : "text-gray-400"
+                      }  `}
                     >
                       <FaMoneyCheckDollar />
                     </button>
@@ -259,6 +266,17 @@ const DashboardTable = ({ data, columns, refetch }) => {
             <UpdateWorkModal
               workId={updateID}
               closeModal={closeModal}
+              refetch={refetch}
+            />
+          )}
+        </>
+      )}
+      {location.pathname === "/dashboard/employee-list" && (
+        <>
+          {isPayModalOpen && (
+            <PaymentModal
+              id={payId}
+              onClose={closeModal}
               refetch={refetch}
             />
           )}
