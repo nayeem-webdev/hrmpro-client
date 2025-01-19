@@ -11,11 +11,13 @@ import { TbLocationPin } from "react-icons/tb";
 import { FiPhoneCall } from "react-icons/fi";
 import { Helmet } from "react-helmet";
 import Title from "../../components/shared/Title";
+import { API } from "../../api/API";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    subject: "",
     message: "",
   });
 
@@ -26,13 +28,15 @@ const ContactUs = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      toast.success("We Have Received Your Mail!");
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      console.error("Failed to send email:", error);
-      toast.error("Failed to send email!");
-    }
+    API.post("/mails", formData)
+      .then(() => {
+        toast.success("We Have Received Your Mail!");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      })
+      .catch((err) => {
+        console.error("Failed to send email:", err);
+        toast.error("Failed to send email!");
+      });
   };
 
   return (
@@ -179,6 +183,25 @@ const ContactUs = () => {
                   id="email"
                   placeholder="Your Email"
                   value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 rounded-md bg-black/5 border text-gray-800 focus:ring-1 focus:ring-primary focus:ring-opacity-50"
+                />
+              </div>
+              {/* subject Field */}
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-md text-black/80/80 mb-2"
+                >
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  name="subject"
+                  id="subject"
+                  placeholder="Subject"
+                  value={formData.subject}
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-md bg-black/5 border text-gray-800 focus:ring-1 focus:ring-primary focus:ring-opacity-50"

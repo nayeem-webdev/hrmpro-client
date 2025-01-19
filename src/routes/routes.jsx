@@ -127,6 +127,16 @@ const routes = createBrowserRouter([
         ),
       },
       {
+        path: "hr-list",
+        element: (
+          <PrivateRoutes>
+            <AdminRoutes>
+              <AllEmployeeList />,
+            </AdminRoutes>
+          </PrivateRoutes>
+        ),
+      },
+      {
         path: "payroll",
         element: (
           <PrivateRoutes>
