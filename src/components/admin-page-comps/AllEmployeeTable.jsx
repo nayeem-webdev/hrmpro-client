@@ -1,19 +1,24 @@
 import NothingToShow from "../shared/NothingToShow";
 import Loading from "../shared/Loading";
-
 import PropTypes from "prop-types";
-import { FaShield } from "react-icons/fa6";
 import { FaEye, FaFire } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { API } from "../../api/API";
 import { toast } from "react-toastify";
 import Modal from "../dashboard/Modal";
-// import UpdateWorkModal from "../employee-page-comps/UpdateWorkModal";
 import { useState } from "react";
+import UpdateUserModal from "./UpdateUserModal";
+import { GrDocumentUpdate } from "react-icons/gr";
 
 const AllEmployeeTable = ({ isLoading, error, data, refetch }) => {
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [updateId, setUpdateId] = useState("");
+  const onUpdateUser = (id) => {
+    setUpdateId(id);
+    setIsUpdateModalOpen(true);
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [fireId, setFireId] = useState(false);
+  const [fireId, setFireId] = useState("");
   const onClickFire = (id) => {
     setFireId(id);
     setIsModalOpen(true);
@@ -96,30 +101,33 @@ const AllEmployeeTable = ({ isLoading, error, data, refetch }) => {
                   ${item?.details?.salary} (Per hour)
                 </td>
                 <td className="py-2 px-4 text-center">
-                  <button
-                    onClick={() => onClickFire(item?._id)}
-                    title="Fire Employee"
-                    disabled={item?.isFired}
-                    className={
-                      item?.isFired
-                        ? "text-gray-500"
-                        : "text-orange-500 hover:text-orange-800"
-                    }
-                  >
-                    <FaFire />
-                  </button>
-                  <button
-                    title="verify"
-                    className="ml-4 text-blue-400 hover:text-blue-700"
-                  >
-                    <FaShield />
-                  </button>
-                  <Link
-                    to={`/dashboard/details/${item?._id}`}
-                    className="ml-4 text-orange-400 hover:text-orange-700"
-                  >
-                    <FaEye />
-                  </Link>
+                  <div className="flex items-center mr-4 gap-4">
+                    <button
+                      onClick={() => onClickFire(item?._id)}
+                      title="Fire Employee"
+                      disabled={item?.isFired}
+                      className={
+                        item?.isFired
+                          ? "text-gray-400"
+                          : "text-orange-500 hover:text-orange-800"
+                      }
+                    >
+                      <FaFire />
+                    </button>
+                    <Link
+                      to={`/dashboard/details/${item._id}`}
+                      className="text-orange-400 hover:text-orange-700"
+                    >
+                      <FaEye />
+                    </Link>
+                    <button
+                      title="Update"
+                      onClick={() => onUpdateUser(item?._id)}
+                      className=" text-primary hover:text-blue-700"
+                    >
+                      <GrDocumentUpdate />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -135,13 +143,13 @@ const AllEmployeeTable = ({ isLoading, error, data, refetch }) => {
           onConfirm={() => handleFire(fireId)}
         />
       )}
-      {/* {isUpdateModalOpen && (
-        <UpdateWorkModal
-          workId={updateID}
-          closeModal={closeModal}
+      {isUpdateModalOpen && (
+        <UpdateUserModal
+          id={updateId}
+          closeModal={() => setIsUpdateModalOpen(false)}
           refetch={refetch}
         />
-      )} */}
+      )}
     </>
   );
 };

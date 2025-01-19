@@ -5,8 +5,17 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { API } from "../../api/API";
 import Modal from "../dashboard/Modal";
+import UpdateUserModal from "./UpdateUserModal";
+import { GrDocumentUpdate } from "react-icons/gr";
 
 const EmployeeListCard = ({ item, refetch }) => {
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [updateId, setUpdateId] = useState("");
+  const onUpdateUser = (id) => {
+    setUpdateId(id);
+    setIsUpdateModalOpen(true);
+  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fireId, setFireId] = useState(false);
   const onClickFire = (id) => {
@@ -50,7 +59,7 @@ const EmployeeListCard = ({ item, refetch }) => {
         </div>
       </div>
 
-      <div className="flex gap-3 items-end justify-between">
+      <div className="flex gap-3 justify-between items-center">
         <div>
           <p className="text-sm text-gray-500">
             <strong>Email: </strong>
@@ -65,14 +74,14 @@ const EmployeeListCard = ({ item, refetch }) => {
           </p>
         </div>
 
-        <div className="flex flex-col mr-4 gap-4">
+        <div className="flex flex-col items-center mr-4 gap-4 bg-gray-100 px-1 py-2 rounded-full">
           <button
             onClick={() => onClickFire(item?._id)}
             title="Fire Employee"
             disabled={item?.isFired}
             className={
               item?.isFired
-                ? "text-gray-500"
+                ? "text-gray-400"
                 : "text-orange-500 hover:text-orange-800"
             }
           >
@@ -80,10 +89,17 @@ const EmployeeListCard = ({ item, refetch }) => {
           </button>
           <Link
             to={`/dashboard/details/${item._id}`}
-            className="ml-4 text-orange-400 hover:text-orange-700"
+            className="text-orange-400 hover:text-orange-700"
           >
             <FaEye />
           </Link>
+          <button
+            title="Update"
+            onClick={() => onUpdateUser(item?._id)}
+            className=" text-primary hover:text-blue-700"
+          >
+            <GrDocumentUpdate />
+          </button>
         </div>
       </div>
       {isModalOpen && (
@@ -95,11 +111,19 @@ const EmployeeListCard = ({ item, refetch }) => {
           onConfirm={() => handleFire(fireId)}
         />
       )}
+      {isUpdateModalOpen && (
+        <UpdateUserModal
+          id={updateId}
+          closeModal={() => setIsUpdateModalOpen(false)}
+          refetch={refetch}
+        />
+      )}
     </div>
   );
 };
 EmployeeListCard.propTypes = {
   item: PropTypes.object.isRequired,
+  refetch: PropTypes.func,
 };
 
 export default EmployeeListCard;
