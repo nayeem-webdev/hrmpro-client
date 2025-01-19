@@ -5,11 +5,11 @@ import PropTypes from "prop-types";
 import { FaShield } from "react-icons/fa6";
 import { FaEye, FaFire } from "react-icons/fa";
 
-const AllEmployeeTable = ({ isPending, error, data }) => {
+const AllEmployeeTable = ({ isLoading, error, data }) => {
   if (error) {
     return <NothingToShow />;
   }
-  if (isPending) {
+  if (isLoading) {
     return (
       <Loading bg="https://i.ibb.co.com/jb4bG4d/Employee-Grievances-Management.gif" />
     );
@@ -93,7 +93,7 @@ const AllEmployeeTable = ({ isPending, error, data }) => {
 };
 
 AllEmployeeTable.propTypes = {
-  isPending: PropTypes.bool,
+  isLoading: PropTypes.bool,
   error: PropTypes.bool,
   data: PropTypes.array.isRequired,
   refetch: PropTypes.func,

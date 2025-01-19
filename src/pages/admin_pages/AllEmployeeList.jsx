@@ -11,7 +11,7 @@ import EmployeeListCard from "../../components/admin-page-comps/EmployeeListCard
 const AllEmployeeList = () => {
   const [isTableView, setIsTableView] = useState(true);
 
-  const { isPending, error, data, refetch } = useQuery({
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await API.get(`/users?isVerified=true&userRole=employee`);
@@ -25,7 +25,7 @@ const AllEmployeeList = () => {
   if (error) {
     return <NothingToShow />;
   }
-  if (isPending) {
+  if (isLoading) {
     return (
       <Loading bg="https://i.ibb.co.com/SrX98Xj/Employee-Management.gif" />
     );
@@ -57,7 +57,7 @@ const AllEmployeeList = () => {
 
       {isTableView ? (
         <AllEmployeeTable
-          isPending={isPending}
+          isLoading={isLoading}
           error={error}
           data={data}
           refetch={refetch}

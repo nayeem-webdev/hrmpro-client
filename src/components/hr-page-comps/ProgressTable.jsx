@@ -4,11 +4,11 @@ import DisplayDate from "../shared/DisplayDate";
 
 import PropTypes from "prop-types";
 
-const ProgressTable = ({ isPending, error, data }) => {
+const ProgressTable = ({ isLoading, error, data }) => {
   if (error) {
     return <NothingToShow />;
   }
-  if (isPending) {
+  if (isLoading) {
     return (
       <Loading bg="https://i.ibb.co.com/jb4bG4d/Employee-Grievances-Management.gif" />
     );
@@ -83,7 +83,7 @@ const ProgressTable = ({ isPending, error, data }) => {
 };
 
 ProgressTable.propTypes = {
-  isPending: PropTypes.bool,
+  isLoading: PropTypes.bool,
   error: PropTypes.bool,
   data: PropTypes.array.isRequired,
 };

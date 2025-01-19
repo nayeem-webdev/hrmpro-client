@@ -8,7 +8,7 @@ import WorkFilter from "../../components/hr-page-comps/WorkFilter";
 const Progress = () => {
   const [sortedData, setSortedData] = useState([]);
 
-  const { isPending, error, data } = useQuery({
+  const { isLoading, error, data } = useQuery({
     queryKey: ["works"],
     queryFn: async () => {
       const res = await API.get(`/works`);
@@ -51,7 +51,7 @@ const Progress = () => {
 
       {/* Sorting Buttons */}
       <div className="flex justify-end mb-4"></div>
-      <ProgressTable isPending={isPending} error={error} data={sortedData} />
+      <ProgressTable isLoading={isLoading} error={error} data={sortedData} />
     </>
   );
 };

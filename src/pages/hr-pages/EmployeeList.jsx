@@ -5,7 +5,7 @@ import { API } from "../../api/API";
 import DashboardTable from "../../components/dashboard/DashboardTable";
 
 const EmployeeList = () => {
-  const { isPending, error, data, refetch } = useQuery({
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await API.get(`/users?userRole=employee`);
@@ -33,7 +33,7 @@ const EmployeeList = () => {
   if (error) {
     return <NothingToShow />;
   }
-  if (isPending) {
+  if (isLoading) {
     return (
       <Loading bg="https://i.ibb.co.com/SrX98Xj/Employee-Management.gif" />
     );

@@ -11,7 +11,7 @@ const WorkSheet = () => {
   const { user } = useContext(AuthContext);
   const { uid } = user;
 
-  const { isPending, error, data, refetch } = useQuery({
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["works", uid],
     queryFn: async () => {
       const res = await API.get(`/works?uid=${uid}`);
@@ -34,7 +34,7 @@ const WorkSheet = () => {
   if (error) {
     return <NothingToShow />;
   }
-  if (isPending) {
+  if (isLoading) {
     return (
       <Loading bg="https://i.ibb.co.com/SrX98Xj/Employee-Management.gif" />
     );

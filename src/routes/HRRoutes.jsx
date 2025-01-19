@@ -10,7 +10,7 @@ const HRRoutes = ({ children }) => {
   const { user } = useContext(AuthContext);
   const { uid } = user;
 
-  const { isPending, data } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["userRole", uid],
     queryFn: async () => {
       const res = await API.get(`/user/role?uid=${uid}`);
@@ -21,7 +21,7 @@ const HRRoutes = ({ children }) => {
     },
   });
 
-  if (isPending) {
+  if (isLoading) {
     return (
       <Loading bg="https://i.ibb.co.com/SrX98Xj/Employee-Management.gif" />
     );

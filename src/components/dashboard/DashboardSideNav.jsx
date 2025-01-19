@@ -21,7 +21,7 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
   const { user } = useContext(AuthContext);
   const { uid } = user;
 
-  const { isPending, data, error } = useQuery({
+  const { isLoading, data, error } = useQuery({
     queryKey: ["userRole", uid],
     queryFn: async () => {
       const res = await API.get(`/user/role?uid=${uid}`);
@@ -33,7 +33,7 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
     enabled: !!uid, // Ensure the query only runs if uid exists
   });
 
-  if (isPending) {
+  if (isLoading) {
     return (
       <Loading bg="https://i.ibb.co.com/SrX98Xj/Employee-Management.gif" />
     );
