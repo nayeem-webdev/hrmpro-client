@@ -4,8 +4,37 @@ import Loading from "../shared/Loading";
 import PropTypes from "prop-types";
 import { FaShield } from "react-icons/fa6";
 import { FaEye, FaFire } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { API } from "../../api/API";
+import { toast } from "react-toastify";
+import Modal from "../dashboard/Modal";
+// import UpdateWorkModal from "../employee-page-comps/UpdateWorkModal";
+import { useState } from "react";
 
-const AllEmployeeTable = ({ isLoading, error, data }) => {
+const AllEmployeeTable = ({ isLoading, error, data, refetch }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fireId, setFireId] = useState(false);
+  const onClickFire = (id) => {
+    setFireId(id);
+    setIsModalOpen(true);
+  };
+  const handleFire = (id) => {
+    console.log(id);
+    const updates = { isFired: true };
+    API.patch(`user/${id}`, updates)
+      .then(() => {
+        toast.success(
+          "User Fired! He will be unable to use the service anymore!"
+        );
+        refetch();
+        setIsModalOpen(false);
+      })
+      .catch((err) => {
+        console.log("error:", err.message);
+        toast.error("Unable To process request! Please try again Later");
+      });
+  };
+
   if (error) {
     return <NothingToShow />;
   }
@@ -45,9 +74,9 @@ const AllEmployeeTable = ({ isLoading, error, data }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => (
+            {data?.map((item, index) => (
               <tr
-                key={item._id}
+                key={item?._id}
                 className={`border-b border-gray-200 hover:bg-gray-100 ${
                   index % 2 === 0 ? "bg-gray-50" : "bg-white"
                 }`}
@@ -55,21 +84,27 @@ const AllEmployeeTable = ({ isLoading, error, data }) => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   {index + 1}
                 </td>
-                <td className="py-2 px-4 ">{item.displayName}</td>
-                <td className="py-2 px-4">{item.email}</td>
+                <td className="py-2 px-4 ">{item?.displayName}</td>
+                <td className="py-2 px-4">{item?.email}</td>
                 <td className="py-2 px-4 text-center">
-                  {item.details.designation}
+                  {item?.details?.designation}
                 </td>
                 <td className="py-2 px-4 text-center">
-                  {item.details.bankAccount}
+                  {item?.details?.bankAccount}
                 </td>
                 <td className="py-2 px-4 text-center">
-                  ${item.details.salary} (Per hour)
+                  ${item?.details?.salary} (Per hour)
                 </td>
                 <td className="py-2 px-4 text-center">
                   <button
-                    title="pay"
-                    className="text-orange-500 hover:text-orange-800"
+                    onClick={() => onClickFire(item?._id)}
+                    title="Fire Employee"
+                    disabled={item?.isFired}
+                    className={
+                      item?.isFired
+                        ? "text-gray-500"
+                        : "text-orange-500 hover:text-orange-800"
+                    }
                   >
                     <FaFire />
                   </button>
@@ -79,15 +114,34 @@ const AllEmployeeTable = ({ isLoading, error, data }) => {
                   >
                     <FaShield />
                   </button>
-                  <button className="ml-4 text-orange-400 hover:text-orange-700">
+                  <Link
+                    to={`/dashboard/details/${item?._id}`}
+                    className="ml-4 text-orange-400 hover:text-orange-700"
+                  >
                     <FaEye />
-                  </button>
+                  </Link>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {isModalOpen && (
+        <Modal
+          headText="Fire User! Are you sure?"
+          subText="This action cannot be undone."
+          buttonText="Fire"
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={() => handleFire(fireId)}
+        />
+      )}
+      {/* {isUpdateModalOpen && (
+        <UpdateWorkModal
+          workId={updateID}
+          closeModal={closeModal}
+          refetch={refetch}
+        />
+      )} */}
     </>
   );
 };

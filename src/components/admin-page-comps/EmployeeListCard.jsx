@@ -1,7 +1,35 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { FaFire, FaEye } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { API } from "../../api/API";
+import Modal from "../dashboard/Modal";
 
-const EmployeeListCard = ({ item }) => {
+const EmployeeListCard = ({ item, refetch }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fireId, setFireId] = useState(false);
+  const onClickFire = (id) => {
+    setFireId(id);
+    setIsModalOpen(true);
+  };
+  const handleFire = (id) => {
+    console.log(id);
+    const updates = { isFired: true };
+    API.patch(`user/${id}`, updates)
+      .then(() => {
+        toast.success(
+          "User Fired! He will be unable to use the service anymore!"
+        );
+        refetch();
+        setIsModalOpen(false);
+      })
+      .catch((err) => {
+        console.log("error:", err.message);
+        toast.error("Unable To process request! Please try again Later");
+      });
+  };
+
   return (
     <div className="border rounded-tl-[60px] border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-all bg-white">
       {/* Photo and Info */}
@@ -38,14 +66,35 @@ const EmployeeListCard = ({ item }) => {
         </div>
 
         <div className="flex flex-col mr-4 gap-4">
-          <button className="text-orange-500 hover:text-orange-800">
-            <FaFire size={20} />
+          <button
+            onClick={() => onClickFire(item?._id)}
+            title="Fire Employee"
+            disabled={item?.isFired}
+            className={
+              item?.isFired
+                ? "text-gray-500"
+                : "text-orange-500 hover:text-orange-800"
+            }
+          >
+            <FaFire />
           </button>
-          <button className="text-orange-400 hover:text-orange-700">
-            <FaEye size={20} />
-          </button>
+          <Link
+            to={`/dashboard/details/${item._id}`}
+            className="ml-4 text-orange-400 hover:text-orange-700"
+          >
+            <FaEye />
+          </Link>
         </div>
       </div>
+      {isModalOpen && (
+        <Modal
+          headText="Fire User! Are you sure?"
+          subText="This action cannot be undone."
+          buttonText="Fire"
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={() => handleFire(fireId)}
+        />
+      )}
     </div>
   );
 };

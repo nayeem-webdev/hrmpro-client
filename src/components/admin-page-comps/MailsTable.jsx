@@ -49,7 +49,7 @@ const MailsTable = ({ isLoading, error, data, refetch }) => {
                   {item?.subject}{" "}
                   <span className="text-gray-400">
                     - {item?.message?.slice(0, 25)}
-                    {item?.message.length > 25 ? "..." : ""}
+                    {item?.message?.length > 25 ? "..." : ""}
                   </span>
                 </td>
 

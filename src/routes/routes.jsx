@@ -20,6 +20,8 @@ import AdminRoutes from "./AdminRoutes.jsx";
 import Payroll from "../pages/admin_pages/Payroll.jsx";
 import Mail from "../pages/admin_pages/Mail.jsx";
 import AllEmployeeList from "../pages/admin_pages/AllEmployeeList.jsx";
+import HrList from "../pages/hr-pages/HrList.jsx";
+import AdminOrHRRoutes from "./AdminOrHRRoutes.jsx";
 
 const routes = createBrowserRouter([
   {
@@ -97,16 +99,6 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "details/:id",
-        element: (
-          <PrivateRoutes>
-            <HRRoutes>
-              <UserDetailsPage />,
-            </HRRoutes>
-          </PrivateRoutes>
-        ),
-      },
-      {
         path: "progress",
         element: (
           <PrivateRoutes>
@@ -131,7 +123,7 @@ const routes = createBrowserRouter([
         element: (
           <PrivateRoutes>
             <AdminRoutes>
-              <AllEmployeeList />,
+              <HrList />,
             </AdminRoutes>
           </PrivateRoutes>
         ),
@@ -153,6 +145,16 @@ const routes = createBrowserRouter([
             <AdminRoutes>
               <Mail />,
             </AdminRoutes>
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "details/:id",
+        element: (
+          <PrivateRoutes>
+            <AdminOrHRRoutes>
+              <UserDetailsPage />,
+            </AdminOrHRRoutes>
           </PrivateRoutes>
         ),
       },

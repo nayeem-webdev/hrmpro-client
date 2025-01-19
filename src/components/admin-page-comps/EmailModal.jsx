@@ -3,6 +3,8 @@ import { API } from "../../api/API";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../shared/Loading";
 import { toast } from "react-toastify";
+import { CgClose, CgMailReply } from "react-icons/cg";
+import { AiOutlineDelete } from "react-icons/ai";
 
 const EmailModal = ({ mailID, onClose, refetch }) => {
   const {
@@ -45,7 +47,7 @@ const EmailModal = ({ mailID, onClose, refetch }) => {
             onClick={onClose}
             className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300 mt-4"
           >
-            Close
+            <CgClose />
           </button>
         </div>
       </div>
@@ -80,24 +82,24 @@ const EmailModal = ({ mailID, onClose, refetch }) => {
           <p className="text-gray-700">{emailData?.message}</p>
         </div>
 
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-end space-x-2">
           <button
             onClick={() => onDelete(mailID)} // Pass mailID to delete handler
-            className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600"
+            className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-800"
           >
-            Delete
+            <AiOutlineDelete size={20} />
           </button>
           <a
             href={`mailto:${emailData?.email}`}
-            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+            className="bg-primary text-white p-2 rounded-lg hover:bg-blue-600"
           >
-            Reply
+            <CgMailReply size={20} />
           </a>
           <button
             onClick={onClose}
-            className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300"
+            className="bg-gray-200 text-gray-800 p-2 rounded-lg hover:bg-gray-300"
           >
-            Close
+            <CgClose size={20} />
           </button>
         </div>
       </div>

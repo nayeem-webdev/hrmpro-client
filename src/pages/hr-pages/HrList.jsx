@@ -8,13 +8,13 @@ import { IoGrid } from "react-icons/io5";
 import { FaThList } from "react-icons/fa";
 import EmployeeListCard from "../../components/admin-page-comps/EmployeeListCard";
 
-const AllEmployeeList = () => {
+const HrList = () => {
   const [isTableView, setIsTableView] = useState(true);
 
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await API.get(`/users?isVerified=true&userRole=employee`);
+      const res = await API.get(`/users?isVerified=true&userRole=hr_executive`);
       if (res.data) {
         return res.data;
       }
@@ -65,7 +65,7 @@ const AllEmployeeList = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4  gap-4">
           {data.map((item) => (
-            <EmployeeListCard item={item} key={item._id} refetch={refetch} />
+            <EmployeeListCard item={item} key={item._id} />
           ))}
         </div>
       )}
@@ -73,4 +73,4 @@ const AllEmployeeList = () => {
   );
 };
 
-export default AllEmployeeList;
+export default HrList;
