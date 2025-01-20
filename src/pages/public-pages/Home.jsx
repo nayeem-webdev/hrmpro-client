@@ -1,4 +1,8 @@
 import Hero from "../../components/home/Hero";
+import HowItWorksSection from "../../components/home/HowItWorksSection";
+import PricingPlansSection from "../../components/home/PricingPlansSection";
+import ReviewSection from "../../components/home/ReviewSection";
+import ServiceSection from "../../components/home/ServiceSection";
 
 const Home = () => {
   const slides = [
@@ -25,6 +29,10 @@ const Home = () => {
   return (
     <div>
       <Hero slides={slides} />
+      <ServiceSection />
+      <ReviewSection />
+      <HowItWorksSection />
+      <PricingPlansSection />
     </div>
   );
 };
