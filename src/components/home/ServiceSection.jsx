@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FaUserPlus,
   FaTasks,
@@ -72,7 +71,7 @@ const ServiceSection = () => {
             <FaUsersCog className="text-teal-500 text-4xl mb-4 mx-auto" />
             <h3 className="text-xl font-semibold text-gray-700">Admin Panel</h3>
             <p className="text-gray-500 mt-2">
-              Manage your company's human resources with a powerful admin
+              Manage your company&apos;s human resources with a powerful admin
               dashboard for full control.
             </p>
           </div>
