@@ -52,7 +52,7 @@ const PaymentModal = ({ onClose, id, refetch }) => {
     const salaryData = {
       ...paymentData,
       trxId: "",
-      approved: false,
+      isApproved: false,
       paymentDate: new Date(),
       payMonthAndYear: `${month} ${year}`,
     };
