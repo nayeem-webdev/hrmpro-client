@@ -13,7 +13,6 @@ import WorkSheet from "../pages/employee-pages/WorkSheet.jsx";
 import PaymentHistory from "../pages/employee-pages/PaymentHistory.jsx";
 import HRRoutes from "./HRRoutes.jsx";
 import EmployeeList from "../pages/hr-pages/EmployeeList.jsx";
-import UserDetailsPage from "../components/hr-page-comps/UserDetailsPage.jsx";
 import Progress from "../pages/hr-pages/Progress.jsx";
 import EmployeeRoutes from "./EmployeeRoutes.jsx";
 import AdminRoutes from "./AdminRoutes.jsx";
@@ -22,6 +21,7 @@ import Mail from "../pages/admin_pages/Mail.jsx";
 import AllEmployeeList from "../pages/admin_pages/AllEmployeeList.jsx";
 import HrList from "../pages/hr-pages/HrList.jsx";
 import AdminOrHRRoutes from "./AdminOrHRRoutes.jsx";
+import UserDetailsPage from "../pages/shared_pages/UserDetailsPage.jsx";
 
 const routes = createBrowserRouter([
   {

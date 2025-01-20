@@ -3,8 +3,19 @@ import Loading from "../shared/Loading";
 import PropTypes from "prop-types";
 import DisplayDate from "../shared/DisplayDate";
 import { FaStripe } from "react-icons/fa";
+import PaymentModal from "./PaymentModal";
+import { useState } from "react";
 
 const PayrollTable = ({ isLoading, error, data, refetch }) => {
+  // !! Modal Func & State & Pay
+  const [payId, setPayId] = useState("");
+  const [isPayModalOpen, setIsPayModalOpen] = useState(false);
+  const onPayClick = (id) => {
+    console.log(id);
+    setPayId(id);
+    setIsPayModalOpen(true);
+  };
+
   if (error) {
     return <NothingToShow />;
   }
@@ -60,7 +71,16 @@ const PayrollTable = ({ isLoading, error, data, refetch }) => {
                   {item?.trxId || "N/A"}
                 </td>
                 <td className="py-2 px-4 flex justify-center">
-                  <button className="flex justify-center items-center bg-[#5167FC] text-white hover:bg-primary font-bold px-2 rounded-lg">
+                  <button
+                    title="Pay With Stripe"
+                    disabled={item?.isApproved}
+                    onClick={() => onPayClick(item?._id)}
+                    className={` ${
+                      item.isApproved
+                        ? "bg-gray-200 text-gray-500 "
+                        : "bg-[#5167FC] text-white hover:bg-primary"
+                    }flex justify-center items-center font-bold px-2 rounded-lg`}
+                  >
                     <FaStripe size={34} />
                   </button>
                 </td>
@@ -69,6 +89,13 @@ const PayrollTable = ({ isLoading, error, data, refetch }) => {
           </tbody>
         </table>
       </div>
+      {isPayModalOpen && (
+        <PaymentModal
+          id={payId}
+          onClose={() => setIsPayModalOpen(false)}
+          refetch={refetch}
+        />
+      )}
     </>
   );
 };
@@ -77,6 +104,6 @@ PayrollTable.propTypes = {
   isLoading: PropTypes.bool,
   error: PropTypes.bool,
   refetch: PropTypes.func,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
 };
 export default PayrollTable;

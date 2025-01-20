@@ -35,7 +35,6 @@ const PaymentModal = ({ onClose, id, refetch }) => {
         onClose();
       });
   }, [id, onClose]);
-  console.log(paymentData);
 
   useEffect(() => {
     const currentDate = new Date();
