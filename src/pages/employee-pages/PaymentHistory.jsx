@@ -6,9 +6,7 @@ import AuthContext from "../../context/AuthContext";
 
 const PaymentHistory = () => {
   const { user } = useContext(AuthContext);
-  console.log(user);
   const { uid } = user;
-  console.log(uid);
   const { isLoading, error, data } = useQuery({
     queryKey: ["payments"],
     queryFn: async () => {

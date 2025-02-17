@@ -74,7 +74,7 @@ const CheckoutForm = ({ clientSecret, refetch, onClose, paymentData }) => {
             .then((res) => {
               console.log("API Response: ", res.data);
               const updates = {
-                trxId: trxId,
+                trxId: paymentIntent.id,
                 isApproved: true,
               };
               API.patch(`/update-salary/${paymentData._id}`, updates)
@@ -141,7 +141,7 @@ const CheckoutForm = ({ clientSecret, refetch, onClose, paymentData }) => {
       <button
         type="submit"
         disabled={!stripe || loading}
-        className="bg-primary text-white"
+        className="bg-primary text-white w-full py-2 rounded-lg"
       >
         {loading ? "Processing..." : "Pay"}
       </button>

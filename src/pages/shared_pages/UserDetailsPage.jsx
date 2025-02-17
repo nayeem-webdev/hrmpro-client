@@ -17,7 +17,6 @@ import { useParams } from "react-router-dom";
 
 const UserDetailsPage = () => {
   const userId = useParams();
-  console.log(userId);
   const [user, setUser] = useState({});
   const [earningsData, setEarningsData] = useState([]);
   const [paymentData, setPaymentData] = useState([]);
@@ -42,7 +41,6 @@ const UserDetailsPage = () => {
     fetchAllData();
   }, [user?.uid, userId.id]);
 
-  console.log(user.uid);
   return (
     <>
       <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-6 tracking-wide">

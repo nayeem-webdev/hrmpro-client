@@ -6,9 +6,7 @@ import PayrollTable from "../../components/admin-page-comps/PayrollTable";
 
 const Payroll = () => {
   const { user } = useContext(AuthContext);
-  console.log(user);
   const { uid } = user;
-  console.log(uid);
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["payments"],
     queryFn: async () => {

@@ -38,11 +38,9 @@ const UpdateUserModal = ({ id, closeModal, refetch }) => {
         bankAccount: bank,
       },
     };
-    console.log(updates);
 
     API.patch(`/user/${id}`, updates)
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
         toast.success("User updated successfully");
         refetch();
         closeModal();

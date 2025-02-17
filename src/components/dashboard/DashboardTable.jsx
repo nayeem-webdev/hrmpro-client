@@ -12,7 +12,6 @@ import PaymentModal from "../hr-page-comps/PaymentModal";
 
 const DashboardTable = ({ data, columns, refetch }) => {
   const location = useLocation();
-  console.log(location);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
 
   const requestSort = (key) => {
@@ -94,7 +93,6 @@ const DashboardTable = ({ data, columns, refetch }) => {
   const [payId, setPayId] = useState("");
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
   const onPayClick = (id) => {
-    console.log(id);
     setPayId(id);
     setIsPayModalOpen(true);
   };
@@ -120,9 +118,10 @@ const DashboardTable = ({ data, columns, refetch }) => {
 
   const handleDeleteWork = async (id) => {
     try {
-      await API.delete(`/work/${id}`).then((res) => console.log(res.data));
-      refetch();
-      toast.success("Delete work successful!");
+      await API.delete(`/work/${id}`).then(() => {
+        refetch();
+        toast.success("Delete work successful!");
+      });
     } catch (error) {
       console.error("Error deleting the work:", error);
       toast.error("Failed to delete the work. Please try again.");
@@ -274,11 +273,7 @@ const DashboardTable = ({ data, columns, refetch }) => {
       {location.pathname === "/dashboard/employee-list" && (
         <>
           {isPayModalOpen && (
-            <PaymentModal
-              id={payId}
-              onClose={closeModal}
-              refetch={refetch}
-            />
+            <PaymentModal id={payId} onClose={closeModal} refetch={refetch} />
           )}
         </>
       )}

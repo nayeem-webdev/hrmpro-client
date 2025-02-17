@@ -63,8 +63,7 @@ const LoginPage = () => {
             } else {
               navigate("/dashboard");
               toast.success("You are Logged in!");
-              console.log(res.data?.insertedId);
-              console.log(res.data);
+
             }
           })
           .catch((err) => {

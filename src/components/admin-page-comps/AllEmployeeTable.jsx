@@ -24,7 +24,6 @@ const AllEmployeeTable = ({ isLoading, error, data, refetch }) => {
     setIsModalOpen(true);
   };
   const handleFire = (id) => {
-    console.log(id);
     const updates = { isFired: true };
     API.patch(`user/${id}`, updates)
       .then(() => {

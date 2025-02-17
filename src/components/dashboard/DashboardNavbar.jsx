@@ -7,9 +7,7 @@ import { toast } from "react-toastify";
 
 const DashboardNavbar = ({ toggleSidebar, isOpen }) => {
   const { user, logoutUser, setUser } = useContext(AuthContext);
-  console.log(user);
   // Logout User
-
   const handleLogout = () => {
     logoutUser()
       .then(() => {

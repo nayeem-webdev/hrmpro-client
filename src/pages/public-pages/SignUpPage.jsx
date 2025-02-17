@@ -77,8 +77,7 @@ const SignUpPage = () => {
                 },
               };
               API.post("/user", newUser)
-                .then((res) => {
-                  console.log(res.data);
+                .then(() => {
                   setLoading(false);
                   navigate("/dashboard");
                   toast.success("User Register Successful!");

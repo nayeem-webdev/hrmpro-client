@@ -63,7 +63,6 @@ const UserProfile = () => {
     const updateData = {
       [field]: value,
     };
-    console.log(updateData);
     API.patch(`/user/${userData?._id}`, updateData)
       .then(() => {
         toast.success(`updated to ${value}  successfully!`);

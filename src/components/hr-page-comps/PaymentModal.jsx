@@ -14,8 +14,6 @@ const PaymentModal = ({ onClose, id, refetch }) => {
     API.get(`/works?uid=${id}&paymentStatus=unpaid`)
       .then((res) => {
         const data = res.data;
-        console.log(res.data);
-        console.log(id);
         const result = data.reduce(
           (acc, item) => {
             acc.workIds.push(item._id);
@@ -55,15 +53,13 @@ const PaymentModal = ({ onClose, id, refetch }) => {
       paymentDate: new Date(),
       payMonthAndYear: `${month} ${year}`,
     };
-    console.log(salaryData);
     API.post("/salaries", salaryData)
       .then(() => {
         API.patch("/update-status", {
           ids: salaryData.workIds,
           paymentStatus: "paid",
         })
-          .then((res) => {
-            console.log(res.data);
+          .then(() => {
             toast.success("Payment Request Successful");
             onClose();
             refetch();

@@ -39,8 +39,7 @@ const AddWorkForm = ({ refetch }) => {
       paymentApprovedStatus: "not_approved",
     };
     API.post("/work", newWork)
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
         toast.success("Work Added Successfully");
         setWork("");
         setHoursWorked("");

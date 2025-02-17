@@ -11,7 +11,6 @@ const PayrollTable = ({ isLoading, error, data, refetch }) => {
   const [payId, setPayId] = useState("");
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
   const onPayClick = (id) => {
-    console.log(id);
     setPayId(id);
     setIsPayModalOpen(true);
   };

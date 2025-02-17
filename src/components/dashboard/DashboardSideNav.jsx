@@ -13,6 +13,8 @@ import {
   AiOutlineUnorderedList,
   AiOutlineUser,
 } from "react-icons/ai";
+import { CgSearchLoading } from "react-icons/cg";
+
 import AuthContext from "../../context/AuthContext";
 import { API } from "../../api/API";
 
@@ -29,14 +31,8 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
       }
       throw new Error("Failed to fetch user data");
     },
-    enabled: !!uid, 
+    enabled: !!uid,
   });
-
-  if (isLoading) {
-    return (
-    <p>Loading ...</p>
-    );
-  }
 
   // Handle errors explicitly
   if (error) {
@@ -82,99 +78,108 @@ const DashboardSideNav = ({ toggleSidebar, isOpen }) => {
             >
               <AiOutlineUser /> User Profile
             </NavLink>
-            {employee && (
+            {isLoading ? (
+              <p className="flex items-center gap-2 px-4 py-2 hover:bg-primary/50">
+                <CgSearchLoading />
+                Loading
+              </p>
+            ) : (
               <>
-                <NavLink
-                  to="/dashboard/work-sheet"
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
-                      isActive ? "bg-primary text-white" : ""
-                    }`
-                  }
-                >
-                  <AiOutlineUnorderedList /> Work Sheet
-                </NavLink>
-                <NavLink
-                  to="/dashboard/payment-history"
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
-                      isActive ? "bg-primary text-white" : ""
-                    }`
-                  }
-                >
-                  <IoCashOutline /> Payment History
-                </NavLink>
-              </>
-            )}
-            {HRExecutive && (
-              <>
-                <NavLink
-                  to="/dashboard/employee-list"
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
-                      isActive ? "bg-primary text-white" : ""
-                    }`
-                  }
-                >
-                  <PiUserList />
-                  Employee List
-                </NavLink>
-                <NavLink
-                  to="/dashboard/progress"
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
-                      isActive ? "bg-primary text-white" : ""
-                    }`
-                  }
-                >
-                  <AiOutlineBarChart /> Progress
-                </NavLink>
-              </>
-            )}
-            {admin && (
-              <>
-                <NavLink
-                  to="/dashboard/all-employee-list"
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
-                      isActive ? "bg-primary text-white" : ""
-                    }`
-                  }
-                >
-                  <PiUserList />
-                  Employee List
-                </NavLink>
-                <NavLink
-                  to="/dashboard/hr-list"
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
-                      isActive ? "bg-primary text-white" : ""
-                    }`
-                  }
-                >
-                  <PiUserList />
-                  HR List
-                </NavLink>
-                <NavLink
-                  to="/dashboard/payroll"
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
-                      isActive ? "bg-primary text-white" : ""
-                    }`
-                  }
-                >
-                  <IoCashOutline /> Payroll
-                </NavLink>
-                <NavLink
-                  to="/dashboard/mails"
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
-                      isActive ? "bg-primary text-white" : ""
-                    }`
-                  }
-                >
-                  <AiOutlineMail /> Mails
-                </NavLink>
+                {employee && (
+                  <>
+                    <NavLink
+                      to="/dashboard/work-sheet"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                          isActive ? "bg-primary text-white" : ""
+                        }`
+                      }
+                    >
+                      <AiOutlineUnorderedList /> Work Sheet
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/payment-history"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                          isActive ? "bg-primary text-white" : ""
+                        }`
+                      }
+                    >
+                      <IoCashOutline /> Payment History
+                    </NavLink>
+                  </>
+                )}
+                {HRExecutive && (
+                  <>
+                    <NavLink
+                      to="/dashboard/employee-list"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                          isActive ? "bg-primary text-white" : ""
+                        }`
+                      }
+                    >
+                      <PiUserList />
+                      Employee List
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/progress"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                          isActive ? "bg-primary text-white" : ""
+                        }`
+                      }
+                    >
+                      <AiOutlineBarChart /> Progress
+                    </NavLink>
+                  </>
+                )}
+                {admin && (
+                  <>
+                    <NavLink
+                      to="/dashboard/all-employee-list"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                          isActive ? "bg-primary text-white" : ""
+                        }`
+                      }
+                    >
+                      <PiUserList />
+                      Employee List
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/hr-list"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                          isActive ? "bg-primary text-white" : ""
+                        }`
+                      }
+                    >
+                      <PiUserList />
+                      HR List
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/payroll"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                          isActive ? "bg-primary text-white" : ""
+                        }`
+                      }
+                    >
+                      <IoCashOutline /> Payroll
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/mails"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-2 hover:bg-primary/50 ${
+                          isActive ? "bg-primary text-white" : ""
+                        }`
+                      }
+                    >
+                      <AiOutlineMail /> Mails
+                    </NavLink>
+                  </>
+                )}
               </>
             )}
           </div>
