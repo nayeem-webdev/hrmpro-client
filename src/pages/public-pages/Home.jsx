@@ -1,3 +1,4 @@
+import CompanyNews from "../../components/home/CompanyNews";
 import Hero from "../../components/home/Hero";
 import HowItWorksSection from "../../components/home/HowItWorksSection";
 import Newsletter from "../../components/home/Newsletter";
@@ -33,6 +34,7 @@ const Home = () => {
       <Hero slides={slides} />
       <ServiceSection />
       <HowItWorksSection />
+      <CompanyNews />
       <SalesPromotion />
       <PricingPlansSection />
       <ReviewSection />
