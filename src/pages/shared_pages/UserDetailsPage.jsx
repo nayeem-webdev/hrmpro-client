@@ -14,32 +14,42 @@ import {
   ComposedChart,
 } from "recharts";
 import { useParams } from "react-router-dom";
+import Loading from "../../components/shared/Loading";
 
 const UserDetailsPage = () => {
-  const userId = useParams();
-  const [user, setUser] = useState({});
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
   const [earningsData, setEarningsData] = useState([]);
   const [paymentData, setPaymentData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllData = async () => {
       try {
         const [userResponse, earningsResponse, paidResponse] =
           await Promise.all([
-            API.get(`/user?id=${userId?.id}`),
-            API.get(`/stats/earnings/${user?.uid}`),
-            API.get(`/stats/paid/${user?.uid}`),
+            API.get(`/user?id=${id}`),
+            API.get(`/stats/earnings/${id}`),
+            API.get(`/stats/paid/${id}`),
           ]);
+
         setUser(userResponse.data);
         setEarningsData(earningsResponse.data);
         setPaymentData(paidResponse.data);
       } catch (err) {
         console.error(err.message);
         toast.error("Failed to fetch user data");
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchAllData();
-  }, [user?.uid, userId.id]);
+  }, [id]);
+
+  if (loading) {
+    return <Loading bg="https://i.ibb.co/SrX98Xj/Employee-Management.gif" />;
+  }
 
   return (
     <>
@@ -47,8 +57,7 @@ const UserDetailsPage = () => {
         User Details
       </h1>
 
-      {/* User Profile */}
-      <div className="flex flex-col md:flex-row gap-4 items-center mb-6 ">
+      <div className="flex flex-col md:flex-row gap-4 items-center mb-6">
         <div className="flex justify-center md:border-r-2 md:pr-4">
           <img
             src={user?.photoURL}
@@ -60,44 +69,30 @@ const UserDetailsPage = () => {
           <p className="text-gray-700 text-lg md:text-xl font-semibold flex items-center justify-center md:justify-start gap-1">
             {user?.displayName}
             {user?.isVerified && (
-              <span>
-                <RiVerifiedBadgeFill className="text-lg text-primary" />
-              </span>
+              <RiVerifiedBadgeFill className="text-lg text-primary" />
             )}
           </p>
-          <p className="text-gray-700">
-            {user?.userRole === "employee"
-              ? "Employee"
-              : user?.userRole === "admin"
-              ? "Admin"
-              : user?.userRole === "hr_executive"
-              ? "HR Executive"
-              : user?.userRole}
-          </p>
+          <p className="text-gray-700 capitalize">{user?.userRole || "N/A"}</p>
         </div>
       </div>
 
-      {/* User Info */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div>
           <span className="text-sm text-gray-500 font-medium">Salary:</span>
-          <p className="text-gray-700">${user?.details?.salary}</p>
+          <p className="text-gray-700">${user?.details?.salary || "N/A"}</p>
         </div>
-
         <div>
           <span className="text-sm text-gray-500 font-medium">
             Bank Account:
           </span>
           <p className="text-gray-700">{user?.details?.bankAccount || "N/A"}</p>
         </div>
-
         <div>
           <span className="text-sm text-gray-500 font-medium">
             Designation:
           </span>
           <p className="text-gray-700">{user?.details?.designation || "N/A"}</p>
         </div>
-
         <div>
           <span className="text-sm text-gray-500 font-medium">Fired:</span>
           <p className="text-gray-700">{user?.isFired ? "Yes" : "No"}</p>

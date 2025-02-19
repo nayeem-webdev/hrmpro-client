@@ -2,8 +2,7 @@ import { FaEnvelope } from "react-icons/fa";
 
 const Newsletter = () => {
   return (
-    <div className="bg-blue-600 text-white py-16 px-6 lg:px-24">
-      {/* Heading Section */}
+    <div className="bg-primary text-white py-20 px-6 md:px-36">
       <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-bold">
           Subscribe to Our Newsletter
@@ -14,7 +13,6 @@ const Newsletter = () => {
         </p>
       </div>
 
-      {/* Newsletter Form */}
       <div className="max-w-2xl mx-auto">
         <form className="flex flex-col sm:flex-row items-center gap-4">
           <div className="relative w-full">
@@ -28,7 +26,7 @@ const Newsletter = () => {
           </div>
           <button
             type="submit"
-            className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
+            className="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
           >
             Subscribe
           </button>

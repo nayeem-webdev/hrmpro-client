@@ -1,5 +1,6 @@
 import Hero from "../../components/home/Hero";
 import HowItWorksSection from "../../components/home/HowItWorksSection";
+import Newsletter from "../../components/home/Newsletter";
 import PricingPlansSection from "../../components/home/PricingPlansSection";
 import ReviewSection from "../../components/home/ReviewSection";
 import SalesPromotion from "../../components/home/SalesPromotion";
@@ -35,6 +36,7 @@ const Home = () => {
       <SalesPromotion />
       <PricingPlansSection />
       <ReviewSection />
+      <Newsletter />
     </div>
   );
 };
