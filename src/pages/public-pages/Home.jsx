@@ -2,6 +2,7 @@ import Hero from "../../components/home/Hero";
 import HowItWorksSection from "../../components/home/HowItWorksSection";
 import PricingPlansSection from "../../components/home/PricingPlansSection";
 import ReviewSection from "../../components/home/ReviewSection";
+import SalesPromotion from "../../components/home/SalesPromotion";
 import ServiceSection from "../../components/home/ServiceSection";
 
 const Home = () => {
@@ -30,9 +31,10 @@ const Home = () => {
     <div>
       <Hero slides={slides} />
       <ServiceSection />
-      <ReviewSection />
       <HowItWorksSection />
+      <SalesPromotion />
       <PricingPlansSection />
+      <ReviewSection />
     </div>
   );
 };
