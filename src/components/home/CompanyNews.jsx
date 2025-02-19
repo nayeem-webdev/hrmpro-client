@@ -51,7 +51,7 @@ const CompanyNews = () => {
           industry.
         </p>
       </div>
-      <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {news.map((item, index) => (
           <div key={index} className="border-l-4 border-blue-600 pl-4">
             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-3">
