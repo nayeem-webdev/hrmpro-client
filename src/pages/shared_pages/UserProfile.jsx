@@ -117,7 +117,7 @@ const UserProfile = () => {
 
       {/* Main Content */}
       <main className="w-full flex flex-col items-center py-4">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4  px-5">
           {/* Salary div */}
           <div className="bg-white p-4 shadow rounded-lg">
             <h2 className="text-lg font-medium mb-4 flex items-center text-black">
@@ -148,9 +148,7 @@ const UserProfile = () => {
                     className="p-2 border rounded-tl-md rounded-bl-md w-full text-gray-700"
                     onChange={(e) => setRole(e.target.value)}
                   >
-                    <option value="">
-                      Select Role
-                    </option>
+                    <option value="">Select Role</option>
                     <option value="employee">Employee</option>
                     <option value="hr_executive">HR Executive</option>
                   </select>

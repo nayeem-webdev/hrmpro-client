@@ -115,14 +115,28 @@ const Navbar = () => {
           ))}
 
           {user && (
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                isActive ? "text-primary font-semibold" : " hover:text-primary"
-              }
-            >
-              Dashboard
-            </NavLink>
+            <>
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-primary font-semibold"
+                    : " hover:text-primary"
+                }
+              >
+                Profile
+              </NavLink>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-primary font-semibold"
+                    : " hover:text-primary"
+                }
+              >
+                Dashboard
+              </NavLink>
+            </>
           )}
         </div>
 

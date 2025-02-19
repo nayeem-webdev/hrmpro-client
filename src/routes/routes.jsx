@@ -49,6 +49,10 @@ const routes = createBrowserRouter([
         path: "/about",
         element: <AboutPage />,
       },
+      {
+        path: "/profile",
+        element: <UserProfile />,
+      },
     ],
   },
   {
